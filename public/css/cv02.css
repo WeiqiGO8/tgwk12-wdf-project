@@ -1,0 +1,91 @@
+:root {
+	background: #505050;
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+img {
+	max-width: 100%;
+}
+
+#navigation-bar {
+	margin: 0;
+	padding: 0.8%;
+	color: #000000;
+	background: #606060;
+}
+
+#navigation-bar ul {
+	display: flex;
+	justify-content: space-evenly;
+	list-style: none;
+}
+
+.main {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto auto auto;
+	grid-template-areas:
+		"contact-information education professional-experience ."
+		"contact-information computer-skills languages ."
+		"contact-information other-info . .";
+}
+
+.contact-information {
+	grid-area: contact-information;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	margin: 8%;
+}
+
+.contact-information img {
+	fill: 1;
+	margin: 1% 0;
+}
+
+.email {
+	display: flex;
+}
+
+.phone {
+	display: flex;
+}
+
+.education {
+	grid-area: education;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.professional-experience {
+	grid-area: professional-experience;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.computer-skills {
+	grid-area: computer-skills;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.languages {
+	grid-area: languages;
+	display: flex;
+	fill: 1;
+	flex-direction: column;
+	align-items: center;
+}
+
+.other-info {
+	grid-area: other-info;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
