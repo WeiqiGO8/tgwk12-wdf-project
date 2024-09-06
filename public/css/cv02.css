@@ -11,66 +11,58 @@ p {
 
 li {
 	font-size: 1.1em;
-	padding: 6% 0;
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
 
 img {
 	max-width: 100%;
 }
 
-#navigation-bar {
-	margin: 0;
-	padding: 0.8%;
-	color: #000000;
-	background: #606060;
-}
-
-#navigation-bar ul {
-	display: flex;
-	justify-content: space-evenly;
-	list-style: none;
-}
-
-#navigation-bar ul li {
-	margin: 0;
-}
-
-.main {
+.main-container {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: auto auto auto auto auto;
+	grid-template-rows: 6em auto auto auto auto auto;
 	grid-template-areas:
+		"navigation-bar navigation-bar navigation-bar navigation-bar"
 		"introduction introduction introduction introduction"
 		"contact-information contact-information . . "
 		"skills-container skills-container skills-container skills-container"
 		"experience experience experience experience"
-		"education education other-info other-info";
+		"education education other-info other-info"
+		"main-footer main-footer main-footer main-footer";
+}
+
+#navigation-bar {
+	grid-area: navigation-bar;
+	margin: 0;
+}
+
+#navigation-bar ul {
+	height: 6em;
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
+	margin: 0;
+}
+
+#navigation-bar ul li {
+	padding: 2em;
 }
 
 .introduction {
 	grid-area: introduction;
 	display: flex;
 	flex-direction: column;
-}
-
-.introduction .flex-container {
-	display: flex;
-	margin: 0 10%;
-	padding: 0;
+	margin: 2% 16%;
 }
 
 .introduction #name {
-	margin: 4% 0 4% 20%;
 	font-size: 6em;
 }
 
-.introduction .flex-container #cv-img {
-	width: 50%;
-	margin: 0 1% 0 4%;
-	padding: 0;
-}
-
-.introduction .flex-container p {
+.introduction p {
 	margin: 1% 8% 0 5%;
 }
 
@@ -123,4 +115,9 @@ img {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.main-footer {
+	grid-area: main-footer;
+	background: #00ff00;
 }
