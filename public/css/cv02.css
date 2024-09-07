@@ -41,8 +41,8 @@ img {
 	grid-template-areas:
 		"nav-bar nav-bar nav-bar nav-bar"
 		"intro-container intro-container intro-container intro-container"
-		"skills-container skills-container experience-container experience-container"
 		"showcase-container showcase-container showcase-container showcase-container"
+		"skills-container skills-container experience-container experience-container"
 		"education-container education-container other-container other-container"
 		"main-footer main-footer main-footer main-footer";
 }
@@ -87,20 +87,20 @@ img {
 	margin: 0.8em 8% 1.08em 8%;
 }
 
-/* skillsContainer STYLE */
-.skills-container {
-	grid-area: skills-container;
-	display: flex;
-	flex-direction: column;
-	background: #ff0000;
-}
-
 /* showcase-container STYLE */
 .showcase-container {
 	grid-area: showcase-container;
 	display: flex;
 	flex-direction: row;
 	background: #ff9d9d;
+}
+
+/* skillsContainer STYLE */
+.skills-container {
+	grid-area: skills-container;
+	display: flex;
+	flex-direction: column;
+	background: #ff0000;
 }
 
 /* experience-container STYLE */
@@ -133,16 +133,36 @@ img {
 /* main-footer STYLE */
 .main-footer {
 	grid-area: main-footer;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "cv-img footer-text footer-text";
+	align-items: center;
 	background: #00ff00;
 }
 
-.main-footer img {
-	width: 20%;
-	border-radius: 40%;
-	margin: 4em 10% 2em 2%;
+.main-footer #cv-img {
+	grid-area: cv-img;
+	width: 40%;
+	height: 40%;
+	border-radius: 50%;
+	margin: 2em 10% 2em 2%;
 }
 
-.contact-information {
+.footer-text {
+	grid-area: footer-text;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "footer-links contact-info";
+}
+
+.footer-links {
+	grid-area: footer-links;
+}
+
+.contact-info {
+	grid-area: contact-info;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -152,9 +172,16 @@ img {
 
 .email {
 	display: flex;
-	padding: 1%;
+}
+
+.email .mail-adress {
+	padding: 0 0 0 1%;
 }
 
 .phone {
 	display: flex;
+}
+
+.phone .phone-number {
+	padding: 0 0 0 1%;
 }
