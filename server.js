@@ -106,6 +106,6 @@ app.get("/listpersons", (req, res) => {
 // 	}
 // );
 
-app.listen(port, function () {
+app.listen(port, () => {
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });
