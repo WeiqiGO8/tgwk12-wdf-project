@@ -206,8 +206,12 @@ a:focus {
 
 .main-footer #cv-img {
 	grid-area: cv-img;
-	width: 40%;
-	height: 40%;
+}
+
+.main-footer #cv-img img {
+	width: 10em;
+	height: 10em;
+	object-fit: cover;
 	border-radius: 50%;
 	margin: 2em 10% 2em 2%;
 }
@@ -233,7 +237,7 @@ a:focus {
 
 .contact-info .contact-content ul {
 	display: flex;
-	flex-wrap: nowrap;
+	/* flex-wrap: nowrap; */
 }
 
 .contact-info .contact-content li {
