@@ -4,15 +4,22 @@
 	/* CSS Gradient   ------------------------------- 
 	https://cssgradient.io/
 	*/
-	background: #090979;
+	/* background: #090979; */
+	background: #073e9c77;
 	background: radial-gradient(
 		circle,
-		rgba(2, 0, 36, 1) 0%,
+		#020024,
+		#090979,
+		#073e9c,
+		#0486cb,
+		#00d4ff
+			/* rgba(2, 0, 36, 1) 0%,
 		rgba(9, 9, 121, 1) 23%,
 		rgba(7, 62, 156, 1) 62%,
 		rgba(4, 134, 203, 1) 83%,
-		rgba(0, 212, 255, 1) 100%
+		rgba(0, 212, 255, 1) 100% */
 	);
+
 	/*-------------------------------- */
 	font-family: sans-serif;
 	margin: 0 10%;
@@ -60,18 +67,18 @@ img {
 }
 
 a {
-	color: #ffffff;
+	color: #dfdfdf;
 	text-decoration: underline;
 }
 
 a:link {
-	color: #ffffff;
+	color: #dfdfdf;
 	text-decoration: underline;
 }
 
-a:visited {
+/* a:visited {
 	color: #ff9d9d;
-}
+} */
 
 a:hover {
 	text-decoration: overline;
@@ -85,25 +92,24 @@ a:focus {
 	outline-style: inset;
 }
 
-/* mainContainer OF THE /CV ROUTE */
+/* main-container OF THE /CV ROUTE */
 .main-container {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: 6em auto auto auto auto;
+	grid-template-rows: 6em auto auto auto auto auto;
 	grid-template-areas:
 		"nav-bar nav-bar nav-bar nav-bar"
 		"intro-container intro-container intro-container intro-container"
 		"showcase-container showcase-container showcase-container showcase-container"
-		"skills-container skills-container experience-container experience-container"
-		"education-container education-container other-container other-container"
+		"skills-experience-container skills-experience-container skills-experience-container skills-experience-container"
+		"education-other-container education-other-container education-other-container education-other-container"
 		"main-footer main-footer main-footer main-footer";
 }
 
-/* nav-bar STYLE */
 .nav-bar {
 	grid-area: nav-bar;
 	margin: 0;
-	background: #7dd6ff7e;
+	background: #073e9c;
 }
 
 .nav-bar ul {
@@ -117,7 +123,6 @@ a:focus {
 	padding: 2em 0;
 }
 
-/* intro-container STYLE */
 .intro-container {
 	grid-area: intro-container;
 	display: flex;
@@ -137,11 +142,10 @@ a:focus {
 	margin: 2em 8%;
 }
 
-/* showcase-container STYLE */
 .showcase-container {
 	grid-area: showcase-container;
 	margin: 2em 0;
-	background: #a34a4a;
+	background: #073e9c;
 }
 
 .showcase-container ul {
@@ -153,55 +157,90 @@ a:focus {
 .showcase-container ul li {
 	list-style: none;
 }
-/* skillsContainer STYLE */
+
+.skills-experience-container {
+	grid-area: skills-experience-container;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "skills-container skills-container experience-container experience-container";
+}
+
 .skills-container {
+	background: #7dd6ff7e;
 	grid-area: skills-container;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	background: #ff0000;
+	align-items: left;
+}
+
+.skills-container h2 {
+	align-self: center;
+}
+
+.skills-container h3 {
+	align-self: center;
 }
 
 .skills-container ul li {
 	text-align: left;
 }
-
-/* experience-container STYLE */
 .experience-container {
+	background: #9bdfff7e;
 	grid-area: experience-container;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	background: #f8ec7f;
+	align-items: left;
 }
 
-/* education-container STYLE */
+.experience-container h2 {
+	align-self: center;
+}
+
+.education-other-container {
+	grid-area: education-other-container;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "education-container education-container other-container other-container";
+}
+
 .education-container {
+	background: #9bdfff7e;
 	grid-area: education-container;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	background: #c04ff5;
+	align-items: left;
 }
 
-/* other-container STYLE */
+.education-container h2 {
+	align-self: center;
+}
+
 .other-container {
+	background: #7dd6ff7e;
 	grid-area: other-container;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	background: #966304;
 }
 
-/* main-footer STYLE */
+.other-container h2 {
+	align-self: center;
+}
+
 .main-footer {
+	color: #dfdfdf;
+	background: #073e9c;
 	grid-area: main-footer;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: auto;
 	grid-template-areas: "cv-img footer-text footer-text";
 	align-items: center;
-	background: #00ff00;
+}
+
+.main-footer ul li {
+	list-style: none;
 }
 
 .main-footer #cv-img {
@@ -230,17 +269,18 @@ a:focus {
 
 .contact-info {
 	grid-area: contact-info;
-	align-items: center;
-	width: 100%;
-	margin: 0;
-}
-
-.contact-info .contact-content ul {
 	display: flex;
-	/* flex-wrap: nowrap; */
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: left;
+	width: 100%;
 }
 
-.contact-info .contact-content li {
-	list-style: none;
-	margin: 1em 10% 1em 0;
+.contact-info .email,
+.contact-info .phone {
+	display: flex;
+}
+
+.contact-info ul li {
+	white-space: nowrap;
 }
