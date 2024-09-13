@@ -219,6 +219,18 @@ a:focus {
 }
 
 /* projects route page style */
+.projects-container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.proj-research {
+	color: green;
+}
+
+.proj-teaching {
+	color: rgb(234, 214, 0);
+}
 
 /* /contacts route page style */
 /* contacts-container of the /projects route */
@@ -326,12 +338,4 @@ a:focus {
 
 .other-container h2 {
 	align-self: center;
-}
-
-.proj-research {
-	color: green;
-}
-
-.proj-teaching {
-	color: rgb(234, 214, 0);
 }
