@@ -1,7 +1,7 @@
 // load the express package in the express variable
 const express = require("express");
-
 const sqlite3 = require("sqlite3");
+const { engine } = require("express-handlebars"); // load the handlebars package for express
 
 //define the ports
 const port = 8080; //default port
@@ -16,20 +16,27 @@ app.use(express.static("public"));
 const dbFile = "my-project-data.sqlite3.db";
 db = new sqlite3.Database(dbFile);
 
+// Handlebars
+app.engine("handlebars", engine()); //initialize the engine to be handlebars
+app.set("view engine", "handlebars"); //set handlebars as the view engine
+app.set("views", "./views"); // define the views directory to be ./views
+
 // define the different "/"_|routes|
 // default "/" route
 app.get("/", (req, res) => {
 	console.log("Sending the default route");
-	res.send("Hello 'World'!");
+	res.render("home.handlebars");
+	// res.send("Hello 'World'!");
 });
 
-// CV
-app.get("/cv", (req, res) => {
+// route to /CV
+app.get("/about", (req, res) => {
 	console.log("Sending the route cv!");
-	res.sendFile(__dirname + "/views/mycv-02.html");
+	res.render("mycv.handlebars");
+	// res.sendFile(__dirname + "/views/mycv-02.html");
 });
 
-// Raw data - Person table
+// route to Raw data - Person table
 app.get("/rawpersons", (req, res) => {
 	db.all("SELECT * FROM Person", (error, thePersons) => {
 		if (error) {
@@ -41,7 +48,7 @@ app.get("/rawpersons", (req, res) => {
 	});
 });
 
-// listpersons
+// route to listpersons
 app.get("/listpersons", (req, res) => {
 	db.all("SELECT * FROM Person", (err, rawPersons) => {
 		if (err) {
