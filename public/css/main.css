@@ -1,4 +1,8 @@
 /* Global styles ------------------------------------*/
+* {
+	box-sizing: border-box;
+}
+
 :root {
 	background-color: #000000;
 	/* START -------------------------------------
@@ -95,26 +99,26 @@ a:focus {
 
 /* main.handlebars style */
 /* Navigation ---------------------*/
-#main-navigation-header nav {
+.main-navigation-header nav {
 	grid-area: nav-bar;
 	margin: 0;
 	background: #073e9c;
 }
 
-#main-navigation-header nav ul {
+.main-navigation-header nav ul {
 	display: flex;
 	justify-content: flex-end;
 	height: 6em;
 }
 
-#main-navigation-header nav ul li {
+.main-navigation-header nav ul li {
 	list-style: none;
 	margin: 1%;
 	padding: 2em 0;
 }
 
 /* Footer --------------------*/
-#main-footer {
+.main-footer {
 	color: #dfdfdf;
 	background: #073e9c;
 	grid-area: main-footer;
@@ -125,15 +129,15 @@ a:focus {
 	align-items: center;
 }
 
-#main-footer ul li {
+.main-footer ul li {
 	list-style: none;
 }
 
-#main-footer #cv-img {
+.main-footer #cv-img {
 	grid-area: cv-img;
 }
 
-#main-footer #cv-img img {
+.main-footer #cv-img img {
 	width: 10em;
 	height: 10em;
 	object-fit: cover;
@@ -141,7 +145,7 @@ a:focus {
 	margin: 2em 10% 2em 2%;
 }
 
-#footer-text {
+.footer-text {
 	grid-area: footer-text;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -149,12 +153,15 @@ a:focus {
 	grid-template-areas: "footer-links contact-info";
 }
 
-#footer-links {
+.footer-links {
 	grid-area: footer-links;
 }
 
-#contact-info {
+.contact-list {
 	grid-area: contact-info;
+}
+
+.contact-info {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -162,16 +169,16 @@ a:focus {
 	width: 100%;
 }
 
-#contact-info h3 {
+.contact-info h3 {
 	margin: 0.6em 2% 0 2%;
 }
 
-#contact-info #email,
-#contact-info #phone {
+.contact-info .info-content {
 	display: flex;
+	flex-direction: column;
 }
 
-#contact-info ul li {
+.contact-info ul li {
 	white-space: nowrap;
 	margin: 0.6em 1%;
 }
@@ -211,7 +218,37 @@ a:focus {
 	list-style: none;
 }
 
-/* /cv route page style */
+/* projects route page style */
+
+/* /contacts route page style */
+/* contacts-container of the /projects route */
+.contact-container {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "projects-aside-container map-container map-container map-container";
+}
+
+.contact-aside-container {
+	grid-area: projects-aside-container;
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+}
+
+.contact-container .contact-aside-container ul li {
+	list-style: none;
+}
+
+.contact-container .contact-aside-container ul li:last-child {
+	white-space: normal;
+}
+
+.map-container {
+	grid-area: map-container;
+}
+
+/* /about route page style */
 /* cv-container OF THE /CV ROUTE */
 .cv-container {
 	display: grid;
@@ -222,14 +259,14 @@ a:focus {
 		"education-other-container education-other-container education-other-container education-other-container";
 }
 
-.cv-container-one {
+.container-one {
 	background: #7dd6ff7e;
 	display: flex;
 	flex-direction: column;
 	align-items: left;
 }
 
-.cv-container-two {
+.container-two {
 	background: #9bdfff7e;
 	display: flex;
 	flex-direction: column;
@@ -289,4 +326,12 @@ a:focus {
 
 .other-container h2 {
 	align-self: center;
+}
+
+.proj-research {
+	color: green;
+}
+
+.proj-teaching {
+	color: rgb(234, 214, 0);
 }

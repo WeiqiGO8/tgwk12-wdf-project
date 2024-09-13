@@ -6,7 +6,7 @@
 		<title>main.handlebars</title>
 	</head>
 	<body>
-		<header id="main-navigation-header">
+		<header class="main-navigation-header">
 			<nav>
 				<ul>
 					<li><a href="/">Home</a></li>
@@ -18,13 +18,13 @@
 		</header>
 		{{{body}}}
 
-		<footer id="main-footer">
+		<footer class="main-footer">
 			<figure id="cv-img">
 				<img src="/img/profile-img.jpg" alt="profile image" />
 			</figure>
 
-			<section id="footer-text">
-				<section id="main-footer-links" class="links">
+			<section class="footer-text">
+				<section class="main-footer-links links">
 					<h3>External Links</h3>
 					<ul>
 						<li><a href="#">Github</a></li>
@@ -33,15 +33,19 @@
 					</ul>
 				</section>
 
-				<section id="contact-info">
+				<section class="contact-info contact-list">
 					<h3>Contact Information</h3>
-					<ul id="email">
-						<li>E-mail:</li>
-						<li>jaha23fz@student.ju.se</li>
-					</ul>
-					<ul id="phone">
-						<li>Phone:</li>
-						<li>+46 70-707 07 07</li>
+					<ul class="info-content">
+						<li>
+							E-mail:
+							<a href="mailto:"> jaha23fz@student.ju.se</a>
+						</li>
+						<li>
+							Phone:
+							<a href="tel:+">
+								+46 70-707 07 07
+							</a>
+						</li>
 					</ul>
 				</section>
 			</section>

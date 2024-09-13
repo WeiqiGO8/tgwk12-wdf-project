@@ -1,1 +1,27 @@
-<section id="projects-container"></section>
+
+		<section>
+			<h1>projects</h1>
+			<ul>
+				{{#each projects}}
+					<li>
+						{{#if (eq type "research")}}
+              <span class="proj-research">
+                {{else}}
+                <span class="proj-teaching">
+                  {{/if}}
+                  {{year}}
+                </span>
+						{{name}}
+						{{type}}
+						{{desc}}
+						{{year}}
+						{{dev}}
+						<img src="{{url}}" alt="{{url}}" />
+					</li>
+				{{/each}}
+
+			</ul>
+		</section>
+
+	</body>
+</html>
