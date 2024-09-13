@@ -23,6 +23,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"express": "^4.19.2",
+		"express-handlebars": "^8.0.1",
 		"sqlite3": "^5.1.7"
 	}
 }
