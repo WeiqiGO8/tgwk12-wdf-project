@@ -1,5 +1,20 @@
 		<section class="text-container-light projects-container">
 			<h1>Projects and Works</h1>
+
+	{{#each projects}}
+<figure>
+	<img src="{{url}}" alt="{{url}}" />
+	<figcaption>
+						{{name}}
+						{{!-- {{type}}
+						{{desc}} --}}
+						{{year}}
+	</figcaption>
+				{{/each}}
+
+</figure>	
+
+{{!-- 
 			<ul>
 				{{#each projects}}
 					<li>
@@ -19,8 +34,5 @@
 					</li>
 				{{/each}}
 
-			</ul>
+			</ul> --}}
 		</section>
-
-	</body>
-</html>

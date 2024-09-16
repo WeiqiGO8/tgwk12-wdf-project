@@ -6,7 +6,7 @@
 		<title>main.handlebars</title>
 	</head>
 	<body>
-		<header class="main-navigation-header">
+		<header>
 			<nav>
 				<ul>
 					<li><a href="/">Home</a></li>
@@ -16,13 +16,13 @@
 				</ul>
 			</nav>
 		</header>
-		{{{body}}}
-
-		<footer class="main-footer">
-			<figure id="cv-img">
+		<main>
+			{{{body}}}
+		</main>
+		<footer>
+			<figure>
 				<img src="/img/profile-img.jpg" alt="profile image" />
 			</figure>
-
 			<section class="footer-text">
 				<section class="main-footer-links links">
 					<h3>External Links</h3>
@@ -32,7 +32,6 @@
 						<li><a href="#">Instagram</a></li>
 					</ul>
 				</section>
-
 				<section class="contact-info contact-list">
 					<h3>Contact Information</h3>
 					<ul class="info-content">

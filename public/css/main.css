@@ -5,8 +5,13 @@
 	margin: 0;
 	padding: 0;
 	color: var(--color-default-dark);
-	/* background-color pallet */
+
+	/* Website color pallet */
 	--background-alternative-main: #073e9c77;
+	/* START -------------------------------------
+	CSS Gradient 
+	https://cssgradient.io/
+	 */
 	--main-background: radial-gradient(
 		circle,
 		#020024,
@@ -15,6 +20,7 @@
 		#0486cb,
 		#00d4ff
 	);
+	/* END ------------------------------------- */
 	--background-text-container-light: #9bdfff7e;
 	--background-text-container-dark: #7dd6ff7e;
 	--background-main-header-navigation: #073e9c;
@@ -27,48 +33,44 @@
 
 	/* links */
 	--color-a: #dfdfdf;
-	--color-a-visited: #ff9d9d;
+	--color-a-visited: #f49dff;
 
 	/* accessibility */
 	--background-a-focus: #777777b9;
 }
 
-/* Global colors */
+:root {
+	margin: 0 10%;
+	background: var(--main-background);
+}
 
 h1 {
 	font-size: 2em;
 	margin: 0.6em 2% 0 2%;
-	padding: 0;
+	align-self: center;
 }
 
 h2 {
 	font-size: 1.6em;
 	margin: 0.6em 2% 0 2%;
-	padding: 0;
+	align-self: center;
 }
 
 h3 {
 	font-size: 1.3em;
 	margin: 0.6em 2% 0 2%;
-	padding: 0;
+	align-self: center;
 }
 
 p {
 	font-size: 1.2em;
-	margin: 0;
-	padding: 0;
-}
-
-ul {
-	margin: 0;
-	padding: 0;
 }
 
 li {
 	font-size: 1.1em;
 	list-style: square;
+	text-align: left;
 	margin: 1em 6%;
-	padding: 0;
 }
 
 img {
@@ -85,9 +87,9 @@ a:link {
 	text-decoration: underline;
 }
 
-/* a:visited {
-		color: #ff9d9d;
-	} */
+a:visited {
+	color: var(--color-a-visited);
+}
 
 a:hover {
 	text-decoration: overline;
@@ -101,39 +103,44 @@ a:focus {
 	outline-style: inset;
 }
 
-:root {
-	margin: 0 10%;
-	/* START -------------------------------------
-	CSS Gradient 
-	https://cssgradient.io/
-	*/
-	background: var(--main-background);
-	/* END ------------------------------------- */
+/* Styling of containers */
+.text-container-dark {
+	background: var(--background-text-container-dark);
+	display: flex;
+	flex-direction: column;
+	align-items: left;
 }
 
-/* main.handlebars style */
-/* Navigation ---------------------*/
-.main-navigation-header nav {
+.text-container-light {
+	background: var(--background-text-container-light);
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+}
+
+/* Layouts */
+/* Flexbox layouts */
+/* Navigation header */
+header nav {
 	grid-area: nav-bar;
 	margin: 0;
 	background: var(--background-main-header-navigation);
 }
 
-.main-navigation-header nav ul {
+header nav ul {
 	display: flex;
 	justify-content: flex-end;
 	height: 6em;
 }
 
-.main-navigation-header nav ul li {
+header nav ul li {
 	list-style: none;
 	margin: 1%;
 	padding: 2em 0;
 }
 
 /* Footer --------------------*/
-.main-footer {
-	color: var(--color-default-dark);
+footer {
 	background: var(--background-main-footer);
 	grid-area: main-footer;
 	display: grid;
@@ -143,15 +150,15 @@ a:focus {
 	align-items: center;
 }
 
-.main-footer ul li {
+footer ul li {
 	list-style: none;
 }
 
-.main-footer #cv-img {
+footer figure {
 	grid-area: cv-img;
 }
 
-.main-footer #cv-img img {
+footer figure img {
 	width: 10em;
 	height: 10em;
 	object-fit: cover;
@@ -165,6 +172,10 @@ a:focus {
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: auto;
 	grid-template-areas: "footer-links contact-info";
+}
+
+.footer-text h3 {
+	color: var(--color-default-light);
 }
 
 .footer-links {
@@ -183,16 +194,13 @@ a:focus {
 	width: 100%;
 }
 
-.contact-info h3 {
-	margin: 0.6em 2% 0 2%;
-}
-
 .contact-info .info-content {
 	display: flex;
 	flex-direction: column;
 }
 
 .contact-info ul li {
+	color: var(--color-default-light);
 	white-space: nowrap;
 	margin: 0.6em 1%;
 }
@@ -233,19 +241,14 @@ a:focus {
 /* projects route page style */
 .projects-container {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: wrap-reverse;
 }
 
-/* temporary colors!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-.proj-research {
-	color: green;
+.projects-container img {
+	width: 10em;
 }
 
-.proj-teaching {
-	color: rgb(234, 214, 0);
-}
-
-/* /contacts route page style */
+/* Grid layout */
 /* contacts-container of the /projects route */
 .contact-container {
 	display: grid;
@@ -274,7 +277,6 @@ a:focus {
 }
 
 /* /about route page style */
-/* cv-container OF THE /CV ROUTE */
 .cv-container {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -282,20 +284,6 @@ a:focus {
 	grid-template-areas:
 		"skills-experience-container skills-experience-container skills-experience-container skills-experience-container"
 		"education-other-container education-other-container education-other-container education-other-container";
-}
-
-.text-container-dark {
-	background: var(--background-text-container-dark);
-	display: flex;
-	flex-direction: column;
-	align-items: left;
-}
-
-.text-container-light {
-	background: var(--background-text-container-light);
-	display: flex;
-	flex-direction: column;
-	align-items: left;
 }
 
 .skills-experience-container {
@@ -310,23 +298,8 @@ a:focus {
 	grid-area: skills-container;
 }
 
-.skills-container h2 {
-	align-self: center;
-}
-
-.skills-container h3 {
-	align-self: center;
-}
-
-.skills-container ul li {
-	text-align: left;
-}
 .experience-container {
 	grid-area: experience-container;
-}
-
-.experience-container h2 {
-	align-self: center;
 }
 
 .education-other-container {
@@ -341,14 +314,6 @@ a:focus {
 	grid-area: education-container;
 }
 
-.education-container h2 {
-	align-self: center;
-}
-
 .other-container {
 	grid-area: other-container;
-}
-
-.other-container h2 {
-	align-self: center;
 }
