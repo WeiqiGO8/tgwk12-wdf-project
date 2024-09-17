@@ -250,6 +250,7 @@ footer figure img {
 
 .projects-container article figure {
 	align-self: center;
+	border-spacing: 10em;
 }
 
 .projects-container img {

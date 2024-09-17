@@ -22,6 +22,7 @@
 	"author": "Hannah Jansson",
 	"license": "ISC",
 	"dependencies": {
+		"body-parser": "^1.20.3",
 		"express": "^4.19.2",
 		"express-handlebars": "^8.0.1",
 		"sqlite3": "^5.1.7"
