@@ -1,21 +1,24 @@
-		<section class="text-container-light projects-container">
-			<h1>Projects and Works</h1>
+<section class="text-container-light projects-container">
+	<h1>Projects and Works</h1>
 
-	{{#each projects}}
-<figure>
-	<img src="{{url}}" alt="{{url}}" />
-	<figcaption>
+	<article>
+		{{#each projects}}
+			<figure>
+				<a href="">
+					<img src="{{url}}" alt="{{url}}" />
+					<figcaption>
 						{{name}}
-						{{!-- {{type}}
-						{{desc}} --}}
+						{{type}}
+						{{desc}}
 						{{year}}
-	</figcaption>
-				{{/each}}
+					</figcaption>
 
-</figure>	
+				</a>
+			</figure>
+		{{/each}}
+	</article>
 
-{{!-- 
-			<ul>
+	{{!-- <ul>
 				{{#each projects}}
 					<li>
 						{{#if (eq type "research")}}
@@ -33,6 +36,6 @@
 						<img src="{{url}}" alt="{{url}}" />
 					</li>
 				{{/each}}
-
 			</ul> --}}
-		</section>
+
+</section>

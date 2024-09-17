@@ -239,9 +239,17 @@ footer figure img {
 }
 
 /* projects route page style */
-.projects-container {
-	display: flex;
-	flex-wrap: wrap-reverse;
+
+.projects-container article {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: auto;
+	align-self: center;
+	margin: 4em 0 4em 4em;
+}
+
+.projects-container article figure {
+	align-self: center;
 }
 
 .projects-container img {
