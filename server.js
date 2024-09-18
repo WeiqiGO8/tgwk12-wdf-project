@@ -1,7 +1,7 @@
-// load the express package in the express variable
-const express = require("express");
-const sqlite3 = require("sqlite3");
-const { engine } = require("express-handlebars"); // load the handlebars package for express
+// load the packages
+const express = require("express"); // load express
+const sqlite3 = require("sqlite3"); // load sqlite3
+const { engine } = require("express-handlebars"); // load express handlebars
 
 //define the ports
 const port = 8080; //default port
@@ -30,27 +30,28 @@ app.engine(
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
-// define the different "/"_ /route
-// default "/" route
+// define the different /route
+// /default route
 app.get("/", (req, res) => {
 	console.log("Sending the default route");
 	res.render("home.handlebars");
 	// res.send("Hello 'World'!");
 });
 
-// route to projects page
+// /projects route
 app.get("/projects", (req, res) => {
 	console.log("Sending the projects route!");
 	res.render("projects.handlebars", { projects });
 });
 
-// route to /CV changed to /about
+// /about route
 app.get("/about", (req, res) => {
 	console.log("Sending the route cv!");
 	res.render("mycv.handlebars");
 	// res.sendFile(__dirname + "/views/mycv-02.html");
 });
 
+// /contact route
 app.get("/contact", (req, res) => {
 	console.log("Sending the contact page route");
 	res.render("contact.handlebars");
@@ -90,9 +91,9 @@ app.get("/listpersons", (req, res) => {
 	});
 });
 
+// TEMPORARY CODE
 // Create table person at startup
 // creates table projects at startup
-
 // db.run(
 // 	`CREATE TABLE Person (pid INTEGER PRIMARY KEY, fname TEXT NOT NULL, lname
 // 	TEXT NOT NULL, age INTEGER, email TEXT)`,
@@ -133,7 +134,7 @@ app.get("/listpersons", (req, res) => {
 // 	}
 // );
 
-// MODEL
+// TEMPORARY CODE
 const projects = [
 	{
 		id: "1",

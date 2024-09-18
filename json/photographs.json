@@ -1,0 +1,102 @@
+{
+	"photographs": [
+		{
+			"id": 1,
+			"type": "photograph",
+			"name": "A flower",
+			"desc": "a flower image",
+			"year": 2022,
+			"url": "/img/flower.jpg"
+		},
+
+		{
+			"id": "2",
+			"type": "photograph",
+			"name": "forest image",
+			"desc": "a forest image",
+			"year": 2023,
+			"url": "/img/forest.jpg"
+		},
+
+		{
+			"id": "3",
+			"type": "photograph",
+			"name": "holiday img",
+			"desc": "holiday image.",
+			"year": 2021,
+			"url": "/img/holiday.jpg"
+		},
+
+		{
+			"id": "4",
+			"type": "photograph",
+			"name": "rauk",
+			"desc": "rauk",
+			"year": 2020,
+			"url": "/img/rauk.jpg"
+		},
+
+		{
+			"id": "5",
+			"type": "photograph",
+			"name": "rauk",
+			"desc": "-",
+			"year": 2012,
+			"url": "/img/rauk-2.jpg"
+		},
+
+		{
+			"id": "6",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2013,
+			"url": "/img/sky-img.jpg"
+		},
+
+		{
+			"id": "7",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2019,
+			"url": "/img/sky-2.jpg"
+		},
+
+		{
+			"id": "8",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2019,
+			"url": "/img/sky-3.jpg"
+		},
+
+		{
+			"id": "9",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2019,
+			"url": "/img/sky-3.jpg"
+		},
+
+		{
+			"id": "10",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2019,
+			"url": "/img/sky-4.jpg"
+		},
+
+		{
+			"id": "11",
+			"type": "photograph",
+			"name": "sky",
+			"desc": "-",
+			"year": 2019,
+			"url": "/img/sky-5.jpg"
+		}
+	]
+}
