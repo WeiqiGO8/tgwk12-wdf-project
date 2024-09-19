@@ -1,27 +1,27 @@
 {
 	"workfor": [
 		{
-			"id": 1,
-			"type": "Personal project",
-			"name": "Personal projects",
-			"desc": "Jönköping University - School of Engineering",
-			"for": "personal"
+			"fid": 1,
+			"ftype": "Personal project",
+			"fname": "Personal projects",
+			"fdesc": "Jönköping University - School of Engineering",
+			"ffor": "personal"
 		},
 
 		{
-			"id": 2,
-			"type": "High School project",
-			"name": "NTI-Gymnasiet Johanneberg",
-			"desc": "Swedish high school",
-			"for": "High School"
+			"fid": 2,
+			"ftype": "High School project",
+			"fname": "NTI-Gymnasiet Johanneberg",
+			"fdesc": "Swedish high school",
+			"ffor": "High School"
 		},
 
 		{
-			"id": 3,
-			"type": "Higher Education project",
-			"name": "JU - JTH",
-			"desc": "Jönköping University - School of Engineering",
-			"for": "University"
+			"fid": 3,
+			"ftype": "Higher Education project",
+			"fname": "JU - JTH",
+			"fdesc": "Jönköping University - School of Engineering",
+			"ffor": "University"
 		}
 	]
 }

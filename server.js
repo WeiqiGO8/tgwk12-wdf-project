@@ -58,19 +58,54 @@ app.get("/contact", (req, res) => {
 });
 
 // /raw - photographs
+app.get("/rawphotographs", (req, res) => {
+	db.all("SELECT * FROM photographs", (error, thePhotographs) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log("sending back the raw list of photographs...");
+			res.send(thePhotographs);
+		}
+	});
+});
 
 // /list photographs
+app.get("/listphotographs", (req, res) => {
+	db.all("SELECT * FROM photographs", (error, rawphotographs) => {
+		if (error) {
+			console.log(error);
+		} else {
+			//html
+			// console.log()
+			// res.send()
+		}
+	});
+});
 
-// /raw project for
+// /rawworkfor
+app.get("/rawworkfor", (req, res) => {
+	db.all("SELECT * FROM workfor", (error, worksFor) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log("sending back the raw list of works for workfor...");
+			res.send(worksFor);
+		}
+	});
+});
 
-//	/list project for
-
-// Create table photographs
-
-//create table projectsfor
-
-
-
+// /list worksfor
+app.get("/listworkfor", (req, res) => {
+	db.all("SELECT * FROM workfor", (error, rawworkfor) => {
+		if (error) {
+			console.log(error);
+		} else {
+			//html
+			// console.log()
+			// res.send()
+		}
+	});
+});
 
 // TEMPORARY CODE
 // route to Raw data - Person table
@@ -108,152 +143,214 @@ app.get("/listpersons", (req, res) => {
 	});
 });
 
-// TEMPORARY CODE
-// Create table person at startup
-// creates table projects at startup
-// db.run(
-// 	`CREATE TABLE Person (pid INTEGER PRIMARY KEY, fname TEXT NOT NULL, lname
-// 	TEXT NOT NULL, age INTEGER, email TEXT)`,
-// 	(error) => {
-// 		if (error) {
-// 			// tests error: display error
-// 			console.log("---> ERROR: ", error);
-// 		} else {
-// 			// tests error: no error, the table has been created
-// 			console.log("---> Table created!");
-// 			db.run(
-// 				`INSERT INTO Person (fname, lname, age, email) VALUES ('John',
-// 			'Smith', 25, 'john.smith@example.com'), ('Jane', 'Doe', 30, 'jane.doe@mail.com'),
-// 			('Alex', 'Johnson', 40, 'alex.johnson@company.com'), ('Emily', 'Brown', 35,
-// 			'emily.brown@business.org'), ('Michael', 'Davis', 50, 'michael.davis@email.net'),
-// 			('Sarah', 'Miller', 28, 'sarah.miller@example.com'), ('David', 'Garcia', 45,
-// 			'david.garcia@mail.com'), ('Laura', 'Rodriguez', 32,
-// 			'laura.rodriguez@company.com'), ('Chris', 'Wilson', 27,
-// 			'chris.wilson@business.org'), ('Anna', 'Martinez', 22, 'anna.martinez@email.net'),
-// 			('James', 'Taylor', 53, 'james.taylor@example.com'), ('Patricia', 'Anderson', 44,
-// 			'patricia.anderson@mail.com'), ('Robert', 'Thomas', 38,
-// 			'robert.thomas@company.com'), ('Linda', 'Hernandez', 55,
-// 			'linda.hernandez@business.org'), ('William', 'Moore', 26,
-// 			'william.moore@email.net'), ('Barbara', 'Jackson', 37,
-// 			'barbara.jackson@example.com'), ('Richard', 'White', 49, 'richard.white@mail.com'),
-// 			('Susan', 'Lee', 24, 'susan.lee@company.com'), ('Joseph', 'Clark', 41,
-// 			'joseph.clark@business.org'), ('Jessica', 'Walker', 29,
-// 			'jessica.walker@email.net');`,
-// 				function (err) {
-// 					if (err) {
-// 						console.log(err.message);
-// 					} else {
-// 						console.log("---> Rows inserted in the table Person.");
-// 					}
-// 				}
-// 			);
-// 		}
-// 	}
-// );
+// JSON data
 
-// TEMPORARY CODE
-const projects = [
-	{
-		id: "1",
-		name: "A flower",
-		type: "photograph",
-		desc: "A flower",
-		year: 2022,
-		dev: "-",
-		url: "/img/flower.jpg",
-	},
+// workfor
+function initTableWorkFor(mydb) {
+	const workfor = [
+		{
+			fid: 1,
+			ftype: "Personal project",
+			fname: "Personal projects",
+			fdesc: "Jönköping University - School of Engineering",
+			ffor: "personal",
+		},
 
-	{
-		id: "2",
-		name: "forest image",
-		type: "photograph",
-		desc: "a forest image",
-		year: 2023,
-		url: "/img/forest.jpg",
-	},
+		{
+			fid: 2,
+			ftype: "High School project",
+			fname: "NTI-Gymnasiet Johanneberg",
+			fdesc: "Swedish high school",
+			ffor: "High School",
+		},
 
-	{
-		id: "3",
-		name: "holiday img",
-		type: "photograph",
-		desc: "holiday image.",
-		year: 2021,
-		url: "/img/holiday.jpg",
-	},
+		{
+			fid: 3,
+			ftype: "Higher Education project",
+			fname: "JU - JTH",
+			fdesc: "Jönköping University - School of Engineering",
+			ffor: "University",
+		},
+	];
 
-	{
-		id: "4",
-		name: "rauk",
-		desc: "rauk",
-		year: 2020,
-		type: "photograph",
-		url: "/img/rauk.jpg",
-	},
+	//create table workfor at startup
+	db.run(
+		"CREATE TABLE workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, ftype TEXT NOT NULL, fname TEXT NOT NULL, fdesc TEXT NOT NULL, ffor TEXT NOT NULL)",
+		(error) => {
+			if (error) {
+				console.log("ERROR: ", error);
+			} else {
+				console.log("---> table workfor created!");
+				//insert workfor
+				workfor.forEach((oneFor) => {
+					db.run(
+						"INSERT INTO workfor (fid, ftype, fname, fdesc, ffor) VALUES (?, ?, ?, ?, ?)",
+						[oneFor.fid, oneFor.ftype, oneFor.fname, oneFor.fdesc, oneFor.ffor],
+						(error) => {
+							if (error) {
+								console.log("ERROR: ", error);
+							} else {
+								console.log("Line added into the workfor table!");
+							}
+						}
+					);
+				});
+			}
+		}
+	);
+}
 
-	{
-		id: "5",
-		name: "rauk",
-		desc: "-",
-		year: 2012,
-		type: "photograph",
-		url: "/img/rauk-2.jpg",
-	},
+function initTablePhotographs(mydb) {
+	// photographs
+	const photographs = [
+		{
+			pid: 1,
+			ptype: "photograph",
+			pname: "A flower",
+			pdesc: "a flower image",
+			pyear: 2022,
+			purl: "/img/flower.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "6",
-		name: "sky",
-		desc: "-",
-		year: 2013,
-		type: "photograph",
-		url: "/img/sky-img.jpg",
-	},
+		{
+			pid: "2",
+			ptype: "photograph",
+			pname: "forest image",
+			pdesc: "a forest image",
+			pyear: 2023,
+			purl: "/img/forest.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "7",
-		name: "sky",
-		desc: "-",
-		year: 2019,
-		type: "photograph",
-		url: "/img/sky-2.jpg",
-	},
+		{
+			pid: "3",
+			ptype: "photograph",
+			pname: "holiday img",
+			pdesc: "holiday image.",
+			pyear: 2021,
+			purl: "/img/holiday.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "8",
-		name: "sky",
-		desc: "-",
-		year: 2019,
-		type: "photograph",
-		url: "/img/sky-3.jpg",
-	},
+		{
+			pid: "4",
+			ptype: "photograph",
+			pname: "rauk",
+			pdesc: "rauk",
+			pyear: 2020,
+			purl: "/img/rauk.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "9",
-		name: "sky",
-		desc: "-",
-		year: 2019,
-		type: "photograph",
-		url: "/img/sky-3.jpg",
-	},
+		{
+			pid: "5",
+			ptype: "photograph",
+			pname: "rauk",
+			pdesc: "-",
+			pyear: 2012,
+			purl: "/img/rauk-2.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "10",
-		name: "sky",
-		desc: "-",
-		year: 2019,
-		type: "photograph",
-		url: "/img/sky-4.jpg",
-	},
+		{
+			pid: "6",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2013,
+			purl: "/img/sky-img.jpg",
+			pfor: "personal",
+		},
 
-	{
-		id: "11",
-		name: "sky",
-		desc: "-",
-		year: 2019,
-		type: "photograph",
-		url: "/img/sky-5.jpg",
-	},
-];
+		{
+			pid: "7",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2019,
+			purl: "/img/sky-2.jpg",
+			pfor: "personal",
+		},
+
+		{
+			pid: "8",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2019,
+			purl: "/img/sky-3.jpg",
+			pfor: "personal",
+		},
+
+		{
+			pid: "9",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2019,
+			purl: "/img/sky-3.jpg",
+			pfor: "personal",
+		},
+
+		{
+			pid: "10",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2019,
+			purl: "/img/sky-4.jpg",
+			pfor: "personal",
+		},
+
+		{
+			pid: "11",
+			ptype: "photograph",
+			pname: "sky",
+			pdesc: "-",
+			pyear: 2019,
+			purl: "/img/sky-5.jpg",
+			pfor: "personal",
+		},
+	];
+
+	// Create table photographs
+	db.run(
+		"CREATE TABLE photographs (pid INTEGER PRIMARY KEY AUTOINCREMENT, ptype TEXT NOT NULL, pname TEXT NOT NULL, pdesc TEXT NOT NULL, pyear INT, purl TEXT NOT NULL, pfor TEXT NOT NULL)",
+		(error) => {
+			if (error) {
+				console.log("ERROR: ", error); //error: display error in the terminal
+			} else {
+				console.log("---> table photographs created!"); //no error, the table has been created
+				//insert photographs
+				photographs.forEach((onePhoto) => {
+					db.run(
+						"INSERT INTO photographs (pid, ptype, pname, pdesc, pyear, purl, pfor) VALUES (?, ?, ?, ?, ?, ?, ?)",
+						[
+							onePhoto.pid,
+							onePhoto.ptype,
+							onePhoto.pname,
+							onePhoto.pdesc,
+							onePhoto.pyear,
+							onePhoto.purl,
+							onePhoto.pfor,
+						],
+						(error) => {
+							if (error) {
+								console.log("Error: ", error);
+							} else {
+								console.log("line added into the skills tabel!");
+							}
+						}
+					);
+				});
+			}
+		}
+	);
+}
 
 app.listen(port, () => {
+	// initTableWorkFor(db);
+	// initTablePhotographs(db);
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });
