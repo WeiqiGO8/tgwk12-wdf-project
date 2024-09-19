@@ -27,6 +27,7 @@ app.engine(
 		},
 	})
 ); //initialize the engine to be handlebars
+
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
@@ -35,7 +36,6 @@ app.set("views", "./views"); // define the views directory to be ./views
 app.get("/", (req, res) => {
 	console.log("Sending the default route");
 	res.render("home.handlebars");
-	// res.send("Hello 'World'!");
 });
 
 // /projects route
@@ -57,6 +57,22 @@ app.get("/contact", (req, res) => {
 	res.render("contact.handlebars");
 });
 
+// /raw - photographs
+
+// /list photographs
+
+// /raw project for
+
+//	/list project for
+
+// Create table photographs
+
+//create table projectsfor
+
+
+
+
+// TEMPORARY CODE
 // route to Raw data - Person table
 app.get("/rawpersons", (req, res) => {
 	db.all("SELECT * FROM Person", (error, thePersons) => {
@@ -69,6 +85,7 @@ app.get("/rawpersons", (req, res) => {
 	});
 });
 
+// TEMPORARY CODE
 // route to listpersons
 app.get("/listpersons", (req, res) => {
 	db.all("SELECT * FROM Person", (err, rawPersons) => {

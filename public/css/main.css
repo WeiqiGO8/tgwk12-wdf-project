@@ -23,6 +23,7 @@
 	/* END ------------------------------------- */
 	--background-text-container-light: #9bdfff7e;
 	--background-text-container-dark: #7dd6ff7e;
+	--background-gallery: #a5a5a5;
 	--background-main-header-navigation: #073e9c;
 	--background-showcase: #073e9c;
 	--background-main-footer: #073e9c;
@@ -239,23 +240,28 @@ footer figure img {
 }
 
 /* projects route page style */
-
+/* START ----------------------------- 
+		(w3school)
+		https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
+*/
 .projects-container article {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: auto;
-	align-self: center;
-	margin: 4em 0 4em 4em;
+	background: var(--background-gallery);
+	display: flex;
+	flex-wrap: wrap-reverse;
 }
 
 .projects-container article figure {
+	flex: auto;
+	max-width: 50%;
 	align-self: center;
-	border-spacing: 10em;
+	padding: 1em 0;
 }
 
 .projects-container img {
-	width: 10em;
+	max-height: 20em;
 }
+
+/* END ----------------------------------- */
 
 /* Grid layout */
 /* contacts-container of the /projects route */
