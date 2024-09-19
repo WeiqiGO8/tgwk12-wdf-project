@@ -1,0 +1,12 @@
+{
+	"skills": [
+		{
+			"id": 1,
+			"title": "flower",
+			"desc": "a artwork made in photoshop",
+			"year": 2022,
+			"type": "camera",
+			"for": "personal"
+		}
+	]
+}
