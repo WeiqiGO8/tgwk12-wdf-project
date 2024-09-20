@@ -1,7 +1,8 @@
 // load the packages
 const express = require("express"); // load express
 const sqlite3 = require("sqlite3"); // load sqlite3
-const { engine } = require("express-handlebars"); // load express handlebars
+const exphbs = require("express-handlebars");
+// const { engine, ExpressHandlebars } = require("express-handlebars"); // load express handlebars
 
 //Load external .js files
 const workfor = require("./data/workfor.js");
@@ -13,6 +14,8 @@ const port = 8080; //default port
 //create a web application
 const app = express();
 
+app.use(express.urlencoded({ extended: false }));
+
 //define the public directory as "static"
 app.use(express.static("public"));
 
@@ -21,16 +24,17 @@ const dbFile = "my-project-data.sqlite3.db";
 db = new sqlite3.Database(dbFile);
 
 // Handlebars
-app.engine(
-	"handlebars",
-	engine({
-		helpers: {
-			eq(a, b) {
-				return a == b;
-			},
-		},
-	})
-); //initialize the engine to be handlebars
+app.engine("handlebars", exphbs.engine());
+// app.engine(
+// 	"handlebars",
+// 	engine({
+// 		helpers: {
+// 			eq(a, b) {
+// 				return a == b;
+// 			},
+// 		},
+// 	})
+// ); //initialize the engine to be handlebars
 
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
@@ -81,6 +85,16 @@ app.get("/projects", (req, res) => {
 	});
 });
 
+// /route detail page
+app.get("/artworks/:aid", (req, res) => {
+	console.log("Sending detail page");
+	const aid = req.params.aid;
+	db.get("SELECT * FROM artworks WHERE aid = ?", [aid], (error, row) => {
+		console.log(row);
+		res.render("single-artwork", { artwork: row });
+	});
+});
+
 // /about route
 app.get("/about", (req, res) => {
 	console.log("Sending the route cv!");
@@ -93,6 +107,12 @@ app.get("/contact", (req, res) => {
 	res.render("contact.handlebars");
 });
 
+// Login route
+app.get("/login", (req, res) => {
+	console.log("sending the login page");
+	res.render("login.handlebars");
+});
+
 // /list worksfor route
 app.get("/listworkfor", (req, res) => {
 	db.all("SELECT * FROM workfor", (error, rawworkfor) => {
@@ -103,6 +123,20 @@ app.get("/listworkfor", (req, res) => {
 			res.render("workfor.handlebars", modelWorkFor);
 		}
 	});
+});
+
+//Login form
+app.post("/login", (req, res) => {
+	const { username, password } = req.body;
+
+	// const username = req.body.username;
+	// const password = req.body.password;
+
+	if (!username || !password) {
+		return res.status(400).send("username and password required.");
+	} else {
+		res.send(`received: Username - ${username}, Password - ${password}`);
+	}
 });
 
 // initiate tables

@@ -261,6 +261,35 @@ footer figure img {
 	max-height: 20em;
 }
 
+.single-artwork-container article {
+	margin: 1em;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		"single-title single-title"
+		"single-img single-list";
+}
+.single-artwork-container h1 {
+	grid-area: single-title;
+	text-align: left;
+	margin: 1em;
+}
+
+.single-artwork-container ul {
+	grid-area: single-list;
+	flex-direction: column;
+}
+
+.single-artwork-container li:last-child {
+	list-style: none;
+}
+
+.single-artwork-container img {
+	grid-area: single-img;
+	height: 30em;
+}
+
 /* END ----------------------------------- */
 
 /* Grid layout */
