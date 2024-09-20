@@ -23,3 +23,5 @@ const workfor = [
 		ffor: "University",
 	},
 ];
+
+module.exports = workfor;
