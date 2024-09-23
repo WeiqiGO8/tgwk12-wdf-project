@@ -17,7 +17,7 @@ const app = express();
 
 // create database file
 const dbFile = "my-project-data.sqlite3.db";
-db = new sqlite3.Database(dbFile);
+const db = new sqlite3.Database(dbFile);
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -165,7 +165,7 @@ app.post("/register", async (req, res) => {
 		[username, hashedPassword],
 		(error) => {
 			if (error) {
-				res.status(500).send("server error", error);
+				res.status(500).send(`Server error ${error.message}`);
 			} else {
 				res.redirect("/login"); //redirect to the login page after registration
 			}
@@ -183,7 +183,7 @@ app.post("/login", async (req, res) => {
 		[username],
 		async (error, user) => {
 			if (error) {
-				res.status(500).send("Server error", error);
+				res.status(500).send(`Server error ${error.message}`);
 			} else if (!user) {
 				res.status(401).send("user not found");
 			} else {
@@ -201,13 +201,13 @@ app.post("/login", async (req, res) => {
 });
 
 // initiate tables
-function initAccountsTable() {
+function initAccountsTable(db) {
 	db.serialize(() => {
 		db.run("CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)");
 	});
 }
 
-function initTableWorkFor() {
+function initTableWorkFor(db) {
 	//create table workfor at startup
 	db.run(
 		"CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, ftype TEXT NOT NULL, fname TEXT NOT NULL, fdesc TEXT NOT NULL, ffor TEXT NOT NULL)",
@@ -235,7 +235,7 @@ function initTableWorkFor() {
 	);
 }
 
-function initTableArtworks() {
+function initTableArtworks(db) {
 	artworks;
 	// Create table artworks
 	db.run(
@@ -274,9 +274,9 @@ function initTableArtworks() {
 }
 
 app.listen(port, () => {
-	initAccountsTable(db);
-	initTableWorkFor(db);
-	initTableArtworks(db);
+	// initAccountsTable(db);
+	// initTableWorkFor(db);
+	// initTableArtworks(db);
 
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });
