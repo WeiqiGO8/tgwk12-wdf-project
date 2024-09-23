@@ -1,11 +1,17 @@
 <section class="text-container-light">
 	<h1>Login</h1>
 	<form action="/login" method="post">
+		<legend>Login form</legend>
 		<label for="username">Username</label>
-		<input type="text" id="username" name="username" />
+		<input id="username" type="text" name="username" placeholder="Username" />
 
 		<label for="password">Password</label>
-		<input type="password" id="password" name="password" />
+		<input
+			id="password"
+			type="password"
+			name="password"
+			placeholder="Password"
+		/>
 
 		<input type="submit" value="login" />
 	</form>

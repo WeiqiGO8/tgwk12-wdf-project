@@ -22,8 +22,10 @@
 	"author": "Hannah Jansson",
 	"license": "ISC",
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"express": "^4.19.2",
 		"express-handlebars": "^8.0.1",
+		"express-session": "^1.18.0",
 		"sqlite3": "^5.1.7"
 	}
 }
