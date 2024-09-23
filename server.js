@@ -2,7 +2,8 @@
 const express = require("express"); // load express
 const sqlite3 = require("sqlite3"); // load sqlite3
 const exphbs = require("express-handlebars");
-// const { engine, ExpressHandlebars } = require("express-handlebars"); // load express handlebars
+const bcrypt = require("bcryptjs");
+const session = require("express-session");
 
 //Load external .js files
 const workfor = require("./data/workfor.js");
@@ -14,17 +15,35 @@ const port = 8080; //default port
 //create a web application
 const app = express();
 
+// create database file
+const dbFile = "my-project-data.sqlite3.db";
+db = new sqlite3.Database(dbFile);
+
 app.use(express.urlencoded({ extended: false }));
 
 //define the public directory as "static"
 app.use(express.static("public"));
 
-// create database file
-const dbFile = "my-project-data.sqlite3.db";
-db = new sqlite3.Database(dbFile);
+//session middleware
+app.use(
+	session({
+		//setup the session middleware
+		secret: "sessionsecret", // secret key for signing the session ID
+		resave: true, // save the session on every request
+		saveUninitialized: true, //save the session even if it's empty
+	})
+);
+
+app.use((req, res, next) => {
+	if (req.session.user) {
+		res.locals.user = { username: req.session.user };
+	}
+	next();
+});
 
 // Handlebars
 app.engine("handlebars", exphbs.engine());
+
 // app.engine(
 // 	"handlebars",
 // 	engine({
@@ -68,7 +87,7 @@ app.get("/rawartworks", (req, res) => {
 // /default route
 app.get("/", (req, res) => {
 	console.log("Sending the default route");
-	res.render("home.handlebars");
+	res.render("home");
 });
 
 // /projects route
@@ -80,7 +99,7 @@ app.get("/projects", (req, res) => {
 		} else {
 			const modelArtworks = { artworks: rawartworks };
 			console.log(modelArtworks);
-			res.render("artworks.handlebars", modelArtworks);
+			res.render("artworks", modelArtworks);
 		}
 	});
 });
@@ -97,20 +116,26 @@ app.get("/artworks/:aid", (req, res) => {
 
 // /about route
 app.get("/about", (req, res) => {
-	console.log("Sending the route cv!");
-	res.render("mycv.handlebars");
+	console.log("Sending /about!");
+	res.render("mycv");
 });
 
 // /contact route
 app.get("/contact", (req, res) => {
-	console.log("Sending the contact page route");
-	res.render("contact.handlebars");
+	console.log("Sending /contact");
+	res.render("contact");
+});
+
+// register route
+app.get("/register", (req, res) => {
+	console.log("sending /register");
+	res.render("register");
 });
 
 // Login route
 app.get("/login", (req, res) => {
-	console.log("sending the login page");
-	res.render("login.handlebars");
+	console.log("sending /login");
+	res.render("login");
 });
 
 // /list worksfor route
@@ -120,30 +145,72 @@ app.get("/listworkfor", (req, res) => {
 			console.log(error);
 		} else {
 			const modelWorkFor = { workfor: rawworkfor };
-			res.render("workfor.handlebars", modelWorkFor);
+			res.render("workfor", modelWorkFor);
 		}
 	});
 });
 
-//Login form
-app.post("/login", (req, res) => {
+// Register form
+app.post("/register", async (req, res) => {
 	const { username, password } = req.body;
 
-	// const username = req.body.username;
-	// const password = req.body.password;
+	//Add validation here
 
-	if (!username || !password) {
-		return res.status(400).send("username and password required.");
-	} else {
-		res.send(`received: Username - ${username}, Password - ${password}`);
-	}
+	const hashedPassword = await bcrypt.hash(password, 14); //hash the password with a salt
+	console.log(hashedPassword);
+
+	//store the user in the database
+	db.run(
+		"INSERT INTO users (username,password) VALUES(?, ?)",
+		[username, hashedPassword],
+		(error) => {
+			if (error) {
+				res.status(500).send("server error", error);
+			} else {
+				res.redirect("/login"); //redirect to the login page after registration
+			}
+		}
+	);
+});
+
+//Login form
+app.post("/login", async (req, res) => {
+	const { username, password } = req.body;
+
+	//Find the user in the database
+	db.get(
+		"SELECT * FROM users WHERE username = ?",
+		[username],
+		async (error, user) => {
+			if (error) {
+				res.status(500).send("Server error", error);
+			} else if (!user) {
+				res.status(401).send("user not found");
+			} else {
+				const result = await bcrypt.compare(password, user.password);
+
+				if (result) {
+					req.session.user = user; //store the user in the session
+					res.redirect("/"); //Redirect to the default route (home page)
+				} else {
+					res.status(401).send("wrong password");
+				}
+			}
+		}
+	);
 });
 
 // initiate tables
-function initTableWorkFor(mydb) {
+function initAccountsTable() {
+	db.serialize(() => {
+		db.run("CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)");
+	});
+}
+
+function initTableWorkFor() {
 	//create table workfor at startup
 	db.run(
-		"CREATE TABLE workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, ftype TEXT NOT NULL, fname TEXT NOT NULL, fdesc TEXT NOT NULL, ffor TEXT NOT NULL)",
+		"CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, ftype TEXT NOT NULL, fname TEXT NOT NULL, fdesc TEXT NOT NULL, ffor TEXT NOT NULL)",
 		(error) => {
 			if (error) {
 				console.log("ERROR: ", error);
@@ -168,11 +235,11 @@ function initTableWorkFor(mydb) {
 	);
 }
 
-function initTableArtworks(mydb) {
+function initTableArtworks() {
 	artworks;
 	// Create table artworks
 	db.run(
-		"CREATE TABLE artworks (aid INTEGER PRIMARY KEY AUTOINCREMENT, atype TEXT NOT NULL, aname TEXT NOT NULL, adesc TEXT NOT NULL, ayear INT, aurl TEXT NOT NULL, alturl TEXT NOT NULL, afor TEXT NOT NULL)",
+		"CREATE TABLE IF NOT EXISTS artworks (aid INTEGER PRIMARY KEY AUTOINCREMENT, atype TEXT NOT NULL, aname TEXT NOT NULL, adesc TEXT NOT NULL, ayear INT, aurl TEXT NOT NULL, alturl TEXT NOT NULL, afor TEXT NOT NULL)",
 		(error) => {
 			if (error) {
 				console.log("ERROR: ", error); //error: display error in the terminal
@@ -207,7 +274,9 @@ function initTableArtworks(mydb) {
 }
 
 app.listen(port, () => {
-	// initTableWorkFor(db);
-	// initTableArtworks(db);
+	initAccountsTable(db);
+	initTableWorkFor(db);
+	initTableArtworks(db);
+
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });

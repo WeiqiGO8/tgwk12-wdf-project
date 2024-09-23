@@ -361,3 +361,7 @@ footer figure img {
 .other-container {
 	grid-area: other-container;
 }
+
+.login-form {
+	background: #f8dd6f;
+}
