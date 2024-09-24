@@ -13,7 +13,16 @@
 					<li><a href="/projects">Projects</a></li>
 					<li><a href="/about">About</a></li>
 					<li><a href="/contact">Contact</a></li>
-					<li><a href="/login">Login</a></li>
+					<li>
+						{{#if user}}
+							<p class="light-color">Welcome, {{user.username}}</p>
+							<span>
+								<a href="/logout">Logout</a>
+							</span>
+						{{else}}
+							<a href="/login">Login</a>
+						{{/if}}
+					</li>
 				</ul>
 			</nav>
 		</header>
@@ -28,9 +37,9 @@
 				<section class="main-footer-links links">
 					<h3>External Links</h3>
 					<ul>
-						<li><a href="#">Github</a></li>
-						<li><a href="#">DeviantArt</a></li>
-						<li><a href="#">Instagram</a></li>
+						<li><a href="https://github.com/">Github</a></li>
+						<li><a href="https://www.deviantart.com/">DeviantArt</a></li>
+						<li><a href="https://www.instagram.com/?hl=sv">Instagram</a></li>
 					</ul>
 				</section>
 				<section class="contact-info contact-list">

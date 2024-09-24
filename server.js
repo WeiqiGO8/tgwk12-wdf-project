@@ -15,6 +15,7 @@ const port = 8080; //default port
 //create a web application
 const app = express();
 
+// DATABASE
 // create database file
 const dbFile = "my-project-data.sqlite3.db";
 const db = new sqlite3.Database(dbFile);
@@ -23,23 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 
 //define the public directory as "static"
 app.use(express.static("public"));
-
-//session middleware
-app.use(
-	session({
-		//setup the session middleware
-		secret: "sessionsecret", // secret key for signing the session ID
-		resave: true, // save the session on every request
-		saveUninitialized: true, //save the session even if it's empty
-	})
-);
-
-app.use((req, res, next) => {
-	if (req.session.user) {
-		res.locals.user = { username: req.session.user };
-	}
-	next();
-});
 
 // Handlebars
 app.engine("handlebars", exphbs.engine());
@@ -58,6 +42,33 @@ app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
+// setup the session middleware
+app.use(
+	session({
+		//setup the session middleware
+		secret: "sessionsecret", // secret key for signing the session ID
+		resave: true, // save the session on every request
+		saveUninitialized: true, //save the session even if it's empty
+	})
+);
+
+// Middlewares --------------------------------------
+app.use((req, res, next) => {
+	// Checks if the user is logged in
+	if (req.session.user) {
+		//pass the user data to the template
+		res.locals.user = { username: req.session.user };
+	}
+	next(); // continue to the next middleware or route
+});
+
+app.use((req, res, next) => {
+	if (req.session.user) {
+		res.locals.user = req.session.user;
+	}
+	next();
+});
+
 // define the different /route
 // Raw data
 // /raw - workfor
@@ -66,7 +77,6 @@ app.get("/rawworkfor", (req, res) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log("sending back the raw list of works for workfor...");
 			res.send(worksFor);
 		}
 	});
@@ -78,7 +88,6 @@ app.get("/rawartworks", (req, res) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log(theArtworks);
 			res.send(theArtworks);
 		}
 	});
@@ -86,7 +95,6 @@ app.get("/rawartworks", (req, res) => {
 
 // /default route
 app.get("/", (req, res) => {
-	console.log("Sending the default route");
 	res.render("home");
 });
 
@@ -98,7 +106,6 @@ app.get("/projects", (req, res) => {
 			console.log(error);
 		} else {
 			const modelArtworks = { artworks: rawartworks };
-			console.log(modelArtworks);
 			res.render("artworks", modelArtworks);
 		}
 	});
@@ -116,26 +123,26 @@ app.get("/artworks/:aid", (req, res) => {
 
 // /about route
 app.get("/about", (req, res) => {
-	console.log("Sending /about!");
-	res.render("mycv");
+	res.render("about");
 });
 
 // /contact route
 app.get("/contact", (req, res) => {
-	console.log("Sending /contact");
 	res.render("contact");
 });
 
 // register route
 app.get("/register", (req, res) => {
-	console.log("sending /register");
 	res.render("register");
 });
 
 // Login route
 app.get("/login", (req, res) => {
-	console.log("sending /login");
 	res.render("login");
+});
+
+app.get("/logout", (req, res) => {
+	res.render("logout");
 });
 
 // /list worksfor route
@@ -198,6 +205,11 @@ app.post("/login", async (req, res) => {
 			}
 		}
 	);
+});
+
+app.post("/logout", (req, res) => {
+	req.session.destroy(); //destroy the session
+	res.redirect("/"); // redirect to the home page
 });
 
 // initiate tables

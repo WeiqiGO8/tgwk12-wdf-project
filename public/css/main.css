@@ -140,6 +140,10 @@ header nav ul li {
 	padding: 2em 0;
 }
 
+.light-color {
+	color: var(--color-default-light);
+}
+
 /* Footer --------------------*/
 footer {
 	background: var(--background-main-footer);
@@ -362,6 +366,45 @@ footer figure img {
 	grid-area: other-container;
 }
 
-.login-form {
-	background: #f8dd6f;
+.login-form form {
+	background: var(--background-main-header-navigation);
+	margin: 4em 0;
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+	align-items: center;
+	width: 40%;
+	height: 22em;
+	padding: 2em;
+}
+
+.login-form legend {
+	color: var(--color-default-light);
+	margin: 0 0 1em 0;
+	font-size: 1.6em;
+	font-weight: bold;
+}
+
+.login-form input[type="text"] {
+	width: 50%;
+	margin: 1em;
+	padding: 0.8em;
+}
+
+.login-form input[type="password"] {
+	width: 50%;
+	margin: 1em;
+	padding: 0.8em;
+}
+
+.login-form button[type="submit"] {
+	background: #f49dff;
+	width: 50%;
+	margin: 1em;
+	padding: 0.8em;
+}
+
+.login-form button[type="submit"]:hover {
+	background: #9bdfff7e;
+	cursor: pointer;
 }
