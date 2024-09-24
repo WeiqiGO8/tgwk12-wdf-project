@@ -113,10 +113,8 @@ app.get("/projects", (req, res) => {
 
 // /route detail page
 app.get("/artworks/:aid", (req, res) => {
-	console.log("Sending detail page");
 	const aid = req.params.aid;
 	db.get("SELECT * FROM artworks WHERE aid = ?", [aid], (error, row) => {
-		console.log(row);
 		res.render("single-artwork", { artwork: row });
 	});
 });

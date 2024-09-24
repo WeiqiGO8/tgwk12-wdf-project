@@ -161,6 +161,7 @@ footer ul li {
 
 footer figure {
 	grid-area: cv-img;
+	margin: 0 4em;
 }
 
 footer figure img {
