@@ -1,6 +1,6 @@
 // load the packages
-const express = require("express"); // load express
-const sqlite3 = require("sqlite3"); // load sqlite3
+const express = require("express");
+const sqlite3 = require("sqlite3");
 const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
@@ -53,6 +53,7 @@ app.use(
 );
 
 // Middlewares --------------------------------------
+// Session middleware for user/account
 app.use((req, res, next) => {
 	// Checks if the user is logged in
 	if (req.session.user) {
