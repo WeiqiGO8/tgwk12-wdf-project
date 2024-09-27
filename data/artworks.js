@@ -12,7 +12,7 @@ const artworks = [
 
 	{
 		aid: "2",
-		fid: 1,
+		fid: 2,
 		atype: "photo",
 		aname: "forest image",
 		adesc: "a forest image",
@@ -23,7 +23,7 @@ const artworks = [
 
 	{
 		aid: "3",
-		fid: 1,
+		fid: 3,
 		atype: "photo",
 		aname: "holiday img",
 		adesc: "holiday image.",
@@ -34,7 +34,7 @@ const artworks = [
 
 	{
 		aid: "4",
-		fid: 1,
+		fid: 4,
 		atype: "photo",
 		aname: "rauk",
 		adesc: "rauk",

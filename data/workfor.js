@@ -2,19 +2,19 @@ const workfor = [
 	{
 		fid: 1,
 		fname: "Personal projects",
-		fdesc: "Jönköping University - School of Engineering",
+		fdesc: "Made in my free time",
 	},
 
 	{
 		fid: 2,
 		fname: "NTI-Gymnasiet Johanneberg",
-		fdesc: "Swedish high school",
+		fdesc: "Assignment for Swedish high school",
 	},
 
 	{
 		fid: 3,
 		fname: "JU - JTH",
-		fdesc: "Jönköping University - School of Engineering",
+		fdesc: "Assignment for Jönköping University - School of Engineering",
 	},
 
 	{

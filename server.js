@@ -8,7 +8,13 @@ const session = require("express-session");
 //Load external .js files
 const workfor = require("./data/workfor.js");
 const artworks = require("./data/artworks.js");
+const codeProjects = require("./data/code-projects.js");
 
+const { initTableArtworks } = require("./inittables/initTableArtworks.js");
+const {
+	initTableCodeProjects,
+} = require("./inittables/initTablecodeProjects.js");
+const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
 //define the ports
 const port = 8080; //default port
 
@@ -66,7 +72,7 @@ app.use((req, res, next) => {
 
 // define the different /route
 // Raw data
-// /raw - workfor
+// /rawworkfor
 app.get("/rawworkfor", (req, res) => {
 	db.all("SELECT * FROM workfor", (error, worksFor) => {
 		if (error) {
@@ -77,7 +83,7 @@ app.get("/rawworkfor", (req, res) => {
 	});
 });
 
-// /raw - artworks
+// /rawartworks
 app.get("/rawartworks", (req, res) => {
 	db.all("SELECT * FROM artworks", (error, theArtworks) => {
 		if (error) {
@@ -88,13 +94,24 @@ app.get("/rawartworks", (req, res) => {
 	});
 });
 
+//  /rawcodeprojects
+app.get("/rawcodeprojects", (req, res) => {
+	db.all("SELECT * FROM codeProjects", (error, theCodeProjects) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(theCodeProjects);
+		}
+	});
+});
+
 // /default route
 app.get("/", (req, res) => {
 	res.render("home");
 });
 
-// /projects route
-// /list artworks route
+// /projects routes
+// / artworks route
 app.get("/projects", (req, res) => {
 	db.all("SELECT * FROM artworks", (error, rawartworks) => {
 		if (error) {
@@ -102,6 +119,19 @@ app.get("/projects", (req, res) => {
 		} else {
 			const modelArtworks = { artworks: rawartworks };
 			res.render("artworks", modelArtworks);
+		}
+	});
+});
+
+//  codeprojects route
+app.get("/codeprojects", (req, res) => {
+	db.all("SELECT * FROM codeProjects", (error, rawcode) => {
+		console.log({ error, rawcode });
+		if (error) {
+			console.log(error);
+		} else {
+			const modelCodeProjects = { codeProjects: rawcode };
+			res.render("code-projects", modelCodeProjects);
 		}
 	});
 });
@@ -115,6 +145,18 @@ app.get("/artworks/:aid", (req, res) => {
 		(error, row) => {
 			console.log(row);
 			res.render("single-artwork", { artwork: row });
+		}
+	);
+});
+
+app.get("/codeprojects/:cid", (req, res) => {
+	const cid = req.params.cid;
+	db.get(
+		"SELECT * FROM codeProjects INNER JOIN workfor ON codeProjects.fid = workfor.fid WHERE cid = ?",
+		[cid],
+		(error, row) => {
+			console.log(row);
+			res.render("code-projects", { codeProject: row });
 		}
 	);
 });
@@ -214,82 +256,16 @@ app.post("/logout", (req, res) => {
 function initAccountsTable(db) {
 	db.serialize(() => {
 		db.run(
-			"CREATE TABLE IF NOT EXISTS users (uid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL)"
+			`CREATE TABLE IF NOT EXISTS users (uid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL)`
 		);
 	});
-}
-
-function initTableWorkFor(db) {
-	//create table workfor at startup
-	db.run(
-		"CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, fname TEXT NOT NULL, fdesc TEXT)",
-		(error) => {
-			if (error) {
-				console.log("ERROR: ", error);
-			} else {
-				console.log("---> table workfor created!");
-				//insert workfor
-				workfor.forEach((oneFor) => {
-					db.run(
-						"INSERT INTO workfor (fid, fname, fdesc) VALUES (?, ?, ?)",
-						[oneFor.fid, oneFor.fname, oneFor.fdesc],
-						(error) => {
-							if (error) {
-								console.log("ERROR: ", error);
-							} else {
-								console.log("Line added into the workfor table!");
-							}
-						}
-					);
-				});
-			}
-		}
-	);
-}
-
-function initTableArtworks(db) {
-	artworks;
-	// Create table artworks
-	db.run(
-		"CREATE TABLE IF NOT EXISTS artworks (aid INTEGER PRIMARY KEY AUTOINCREMENT, uid INTEGER, fid INTEGER, atype TEXT NOT NULL, aname TEXT NOT NULL, adesc TEXT NOT NULL, ayear INT, aurl TEXT NOT NULL, alturl TEXT NOT NULL, FOREIGN KEY (uid) REFERENCES users(uid), FOREIGN KEY (fid) REFERENCES workfor(fid))",
-		(error) => {
-			if (error) {
-				console.log("ERROR: ", error); //error: display error in the terminal
-			} else {
-				console.log("---> table artworks created!"); //no error, the table has been created
-				//insert photographs
-				artworks.forEach((oneartwork) => {
-					db.run(
-						"INSERT INTO artworks (aid, uid, fid, atype, aname, adesc, ayear, aurl, alturl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-						[
-							oneartwork.aid,
-							oneartwork.uid,
-							oneartwork.fid,
-							oneartwork.atype,
-							oneartwork.aname,
-							oneartwork.adesc,
-							oneartwork.ayear,
-							oneartwork.aurl,
-							oneartwork.alturl,
-						],
-						(error) => {
-							if (error) {
-								console.log("Error: ", error);
-							} else {
-								console.log("line added into the artworks table!");
-							}
-						}
-					);
-				});
-			}
-		}
-	);
 }
 
 app.listen(port, () => {
 	initAccountsTable(db);
 	initTableWorkFor(db);
 	initTableArtworks(db);
+	initTableCodeProjects(db);
 
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });
