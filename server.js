@@ -12,6 +12,8 @@ const {
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
 
 const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = `1234`;
+// const ADMIN_PASSWORD = ``;
 
 //define the ports
 const port = 8080; //default port
@@ -108,7 +110,6 @@ app.get("/", (req, res) => {
 	res.render("home");
 });
 
-// /projects routes
 // / artworks route
 app.get("/projects", (req, res) => {
 	db.all("SELECT * FROM artworks", (error, rawartworks) => {
