@@ -5,16 +5,14 @@ const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
-//Load external .js files
-const workfor = require("./data/workfor.js");
-const artworks = require("./data/artworks.js");
-const codeProjects = require("./data/code-projects.js");
-
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
 	initTableCodeProjects,
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
+
+const ADMIN_USERNAME = "admin";
+
 //define the ports
 const port = 8080; //default port
 
@@ -238,6 +236,7 @@ app.post("/login", async (req, res) => {
 
 				if (result) {
 					req.session.user = user; //store the user in the session
+					req.session.isAdmin = user.username === ADMIN_USERNAME;
 					res.redirect("/"); //Redirect to the default route (home page)
 				} else {
 					res.status(401).send("wrong password");
