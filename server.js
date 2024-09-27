@@ -109,9 +109,14 @@ app.get("/projects", (req, res) => {
 // /route detail page
 app.get("/artworks/:aid", (req, res) => {
 	const aid = req.params.aid;
-	db.get("SELECT * FROM artworks WHERE aid = ?", [aid], (error, row) => {
-		res.render("single-artwork", { artwork: row });
-	});
+	db.get(
+		"SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?",
+		[aid],
+		(error, row) => {
+			console.log(row);
+			res.render("single-artwork", { artwork: row });
+		}
+	);
 });
 
 // /about route
