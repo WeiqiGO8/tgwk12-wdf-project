@@ -52,22 +52,16 @@ app.use(
 	})
 );
 
-// Middlewares --------------------------------------
+// Middlewares ----------check for reduncendy or which to use----------------------------
 // Session middleware for user/account
 app.use((req, res, next) => {
 	// Checks if the user is logged in
 	if (req.session.user) {
+		console.log(req.session.user);
 		//pass the user data to the template
-		res.locals.user = { username: req.session.user };
+		res.locals.user = { username: req.session.user.username };
 	}
 	next(); // continue to the next middleware or route
-});
-
-app.use((req, res, next) => {
-	if (req.session.user) {
-		res.locals.user = req.session.user;
-	}
-	next();
 });
 
 // define the different /route
@@ -214,14 +208,16 @@ app.post("/logout", (req, res) => {
 // initiate tables
 function initAccountsTable(db) {
 	db.serialize(() => {
-		db.run("CREATE TABLE IF NOT EXISTS users (username TEXT, password TEXT)");
+		db.run(
+			"CREATE TABLE IF NOT EXISTS users (uid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL)"
+		);
 	});
 }
 
 function initTableWorkFor(db) {
 	//create table workfor at startup
 	db.run(
-		"CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, ftype TEXT NOT NULL, fname TEXT NOT NULL, fdesc TEXT NOT NULL, ffor TEXT NOT NULL)",
+		"CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, fname TEXT NOT NULL, fdesc TEXT)",
 		(error) => {
 			if (error) {
 				console.log("ERROR: ", error);
@@ -230,8 +226,8 @@ function initTableWorkFor(db) {
 				//insert workfor
 				workfor.forEach((oneFor) => {
 					db.run(
-						"INSERT INTO workfor (fid, ftype, fname, fdesc, ffor) VALUES (?, ?, ?, ?, ?)",
-						[oneFor.fid, oneFor.ftype, oneFor.fname, oneFor.fdesc, oneFor.ffor],
+						"INSERT INTO workfor (fid, fname, fdesc) VALUES (?, ?, ?)",
+						[oneFor.fid, oneFor.fname, oneFor.fdesc],
 						(error) => {
 							if (error) {
 								console.log("ERROR: ", error);
@@ -250,7 +246,7 @@ function initTableArtworks(db) {
 	artworks;
 	// Create table artworks
 	db.run(
-		"CREATE TABLE IF NOT EXISTS artworks (aid INTEGER PRIMARY KEY AUTOINCREMENT, atype TEXT NOT NULL, aname TEXT NOT NULL, adesc TEXT NOT NULL, ayear INT, aurl TEXT NOT NULL, alturl TEXT NOT NULL, afor TEXT NOT NULL)",
+		"CREATE TABLE IF NOT EXISTS artworks (aid INTEGER PRIMARY KEY AUTOINCREMENT, uid INTEGER, fid INTEGER, atype TEXT NOT NULL, aname TEXT NOT NULL, adesc TEXT NOT NULL, ayear INT, aurl TEXT NOT NULL, alturl TEXT NOT NULL, FOREIGN KEY (uid) REFERENCES users(uid), FOREIGN KEY (fid) REFERENCES workfor(fid))",
 		(error) => {
 			if (error) {
 				console.log("ERROR: ", error); //error: display error in the terminal
@@ -259,16 +255,17 @@ function initTableArtworks(db) {
 				//insert photographs
 				artworks.forEach((oneartwork) => {
 					db.run(
-						"INSERT INTO artworks (aid, atype, aname, adesc, ayear, aurl, alturl, afor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+						"INSERT INTO artworks (aid, uid, fid, atype, aname, adesc, ayear, aurl, alturl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 						[
 							oneartwork.aid,
+							oneartwork.uid,
+							oneartwork.fid,
 							oneartwork.atype,
 							oneartwork.aname,
 							oneartwork.adesc,
 							oneartwork.ayear,
 							oneartwork.aurl,
 							oneartwork.alturl,
-							oneartwork.afor,
 						],
 						(error) => {
 							if (error) {
@@ -285,9 +282,9 @@ function initTableArtworks(db) {
 }
 
 app.listen(port, () => {
-	// initAccountsTable(db);
-	// initTableWorkFor(db);
-	// initTableArtworks(db);
+	initAccountsTable(db);
+	initTableWorkFor(db);
+	initTableArtworks(db);
 
 	console.log("server up and running, listening to port " + `${port}` + "...");
 });
