@@ -5,13 +5,15 @@ const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
+const { initTableAccounts } = require("./inittables/initTableAccounts.js");
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
 	initTableCodeProjects,
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
+const artworks = require("./data/artworks.js");
 
-const ADMIN_USERNAME = "admin";
+const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
 // const ADMIN_PASSWORD = ``;
 
@@ -110,8 +112,13 @@ app.get("/", (req, res) => {
 	res.render("home");
 });
 
-// / artworks route
+// /projects __artworks route
 app.get("/projects", (req, res) => {
+	res.render("projects");
+});
+
+// /artworks
+app.get("/artworks", (req, res) => {
 	db.all("SELECT * FROM artworks", (error, rawartworks) => {
 		if (error) {
 			console.log(error);
@@ -120,6 +127,19 @@ app.get("/projects", (req, res) => {
 			res.render("artworks", modelArtworks);
 		}
 	});
+});
+
+// /projects __artworks detail page route
+app.get("/artworks/:aid", (req, res) => {
+	const aid = req.params.aid;
+	db.get(
+		"SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?",
+		[aid],
+		(error, row) => {
+			console.log(row);
+			res.render("single-artwork", { artwork: row });
+		}
+	);
 });
 
 //  codeprojects route
@@ -133,19 +153,6 @@ app.get("/codeprojects", (req, res) => {
 			res.render("code-projects", modelCodeProjects);
 		}
 	});
-});
-
-// /route detail page
-app.get("/artworks/:aid", (req, res) => {
-	const aid = req.params.aid;
-	db.get(
-		"SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?",
-		[aid],
-		(error, row) => {
-			console.log(row);
-			res.render("single-artwork", { artwork: row });
-		}
-	);
 });
 
 app.get("/codeprojects/:cid", (req, res) => {
@@ -233,9 +240,10 @@ app.post("/login", async (req, res) => {
 			} else if (!user) {
 				res.status(401).send("user not found");
 			} else {
-				const result = await bcrypt.compare(password, user.password);
+				const isMatch = await bcrypt.compare(password, user.password);
 
-				if (result) {
+				if (isMatch) {
+					//if the password matches
 					req.session.user = user; //store the user in the session
 					req.session.isAdmin = user.username === ADMIN_USERNAME;
 					res.redirect("/"); //Redirect to the default route (home page)
@@ -252,17 +260,8 @@ app.post("/logout", (req, res) => {
 	res.redirect("/"); // redirect to the home page
 });
 
-// initiate tables
-function initAccountsTable(db) {
-	db.serialize(() => {
-		db.run(
-			`CREATE TABLE IF NOT EXISTS users (uid INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL)`
-		);
-	});
-}
-
 app.listen(port, () => {
-	initAccountsTable(db);
+	initTableAccounts(db);
 	initTableWorkFor(db);
 	initTableArtworks(db);
 	initTableCodeProjects(db);

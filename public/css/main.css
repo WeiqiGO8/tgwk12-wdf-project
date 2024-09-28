@@ -120,18 +120,16 @@ a:focus {
 }
 
 /* Layouts */
-/* Flexbox layouts */
+
 /* Navigation header */
-header nav {
-	grid-area: nav-bar;
-	margin: 0;
+header {
+	padding: 1em 0;
 	background: var(--background-main-header-navigation);
 }
 
 header nav ul {
 	display: flex;
 	justify-content: flex-end;
-	height: 6em;
 }
 
 header nav ul li {
@@ -144,24 +142,30 @@ header nav ul li {
 	color: var(--color-default-light);
 }
 
+/* display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: auto;
+	grid-template-areas: "cv-img footer-text footer-text"; */
+
 /* Footer --------------------*/
 footer {
 	background: var(--background-main-footer);
-	grid-area: main-footer;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: auto;
-	grid-template-areas: "cv-img footer-text footer-text";
-	align-items: center;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	column-gap: 1em;
+	padding: 1em 0 0 0;
+	width: 100%;
 }
 
-footer ul li {
-	list-style: none;
+footer article h3 {
+	color: var(--color-default-light);
+	white-space: nowrap;
+	text-align: left;
 }
 
 footer figure {
-	grid-area: cv-img;
-	margin: 0 4em;
+	padding: 0 2%;
 }
 
 footer figure img {
@@ -169,46 +173,25 @@ footer figure img {
 	height: 10em;
 	object-fit: cover;
 	border-radius: 50%;
-	margin: 2em 10% 2em 2%;
+	margin: 2em 1%;
 }
 
-.footer-text {
-	grid-area: footer-text;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: auto;
-	grid-template-areas: "footer-links contact-info";
-}
-
-.footer-text h3 {
-	color: var(--color-default-light);
-}
-
-.footer-links {
-	grid-area: footer-links;
-}
-
-.contact-list {
-	grid-area: contact-info;
-}
-
-.contact-info {
+footer article {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
-	align-items: left;
-	width: 100%;
+	align-items: center;
+	width: 20em;
 }
 
-.contact-info .info-content {
-	display: flex;
-	flex-direction: column;
-}
-
-.contact-info ul li {
-	color: var(--color-default-light);
+footer article ul {
 	white-space: nowrap;
-	margin: 0.6em 1%;
+	margin: 0.6em 0;
+}
+
+footer article ul li {
+	color: var(--color-default-light);
+	list-style: none;
+	text-align: left;
 }
 
 /* /home route //Page style ------------ */
@@ -229,26 +212,27 @@ footer figure img {
 	margin: 2em 8%;
 }
 
-.showcase-container {
-	margin: 2em 0;
-	background: var(--background-showcase);
-}
-
-.showcase-container ul {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-evenly;
-}
-
-.showcase-container ul li {
-	list-style: none;
-}
-
 /* projects route page style */
 /* START ----------------------------- 
 		(w3school)
 		https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
 */
+
+.choose-container {
+	margin: 2em 0;
+	background: var(--background-showcase);
+}
+
+.choose-container ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+.choose-container ul li {
+	list-style: none;
+}
+
 .projects-container article {
 	background: var(--background-gallery);
 	display: flex;
@@ -266,7 +250,7 @@ footer figure img {
 	max-height: 20em;
 }
 
-.single-artwork-container article {
+.detail-container article {
 	margin: 1em;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
@@ -275,22 +259,22 @@ footer figure img {
 		"single-title single-title"
 		"single-img single-list";
 }
-.single-artwork-container h1 {
+.detail-container h1 {
 	grid-area: single-title;
 	text-align: left;
 	margin: 1em;
 }
 
-.single-artwork-container ul {
+.detail-container ul {
 	grid-area: single-list;
 	flex-direction: column;
 }
 
-.single-artwork-container li:last-child {
+.detail-container li:last-child {
 	list-style: none;
 }
 
-.single-artwork-container img {
+.detail-container img {
 	grid-area: single-img;
 	height: 30em;
 }
@@ -367,6 +351,7 @@ footer figure img {
 	grid-area: other-container;
 }
 
+/* Login style */
 .login-form form {
 	background: var(--background-main-header-navigation);
 	margin: 4em 0;
@@ -408,4 +393,74 @@ footer figure img {
 .login-form button[type="submit"]:hover {
 	background: #9bdfff7e;
 	cursor: pointer;
+}
+
+/* -- Responisve Layout ------------------- */
+/* @media screen and (max-width: 940px) {
+	.home-page-container h1 {
+		font-size: 3em;
+		margin: 0.4em 0 0 0;
+	}
+} */
+
+@media screen and (max-width: 1700px) {
+	.home-page-container {
+		margin: 0;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	/* -- header nav ----------------- */
+	header nav ul {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 1em;
+	}
+
+	header nav ul li {
+		list-style: none;
+		margin: 4%;
+		padding: 0.2em 0;
+		align-self: center;
+		text-align: center;
+	}
+
+	/* -- Footer ---------------------- */
+	footer {
+		background: var(--background-main-footer);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		padding: 1em 0 0 0;
+		width: 100%;
+	}
+
+	footer article {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 20em;
+	}
+
+	footer article ul li {
+		padding: 1em 0;
+	}
+
+	footer figure img {
+		width: 10em;
+		height: 10em;
+		object-fit: cover;
+		border-radius: 50%;
+		margin: 2em 1%;
+	}
+}
+
+@media screen and (max-width: 710px) {
+	.home-page-container h1 {
+		font-size: 3em;
+		margin: 0.4em 0 0 6%;
+	}
 }

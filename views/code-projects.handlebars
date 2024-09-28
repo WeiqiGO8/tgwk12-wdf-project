@@ -1,28 +1,25 @@
 <section class="text-container-light projects-container">
-	{{! choose-project }}
-	<section class="showcase-container">
+	<section class="choose-container">
 		<ul>
-			<li><a href="/projects">Artworks</a></li>
+			<li><a href="/artworks">Artworks</a></li>
 			<li><a href="/codeprojects">Code Projects</a></li>
 		</ul>
+	</section>
 
-  <h1>Code projects detail</h1>
+	<h1>Code projects</h1>
 
-  <article>
-  <ul>
-    {{#each codeProjects}}
-    <li>
-				{{cname}}
-				{{ctype}}
-				{{cyear}}
-<img src="{{curl}}" alt="{{calturl}}">
-    </li>
-  </ul>
-    {{/each}}
-  </article>
+	<article>
+		<ul>
+			{{#each codeProjects}}
+				<li>
+					<a href="/codeprojects/{{cid}}">
+						<img src="{{curl}}" alt="{{calturl}}" />
+						{{cname}}
+						{{ctype}}
+						{{cyear}}
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	</article>
 </section>
-
-
-
-			
-			
