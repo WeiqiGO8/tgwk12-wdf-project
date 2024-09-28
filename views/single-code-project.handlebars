@@ -2,27 +2,25 @@
 	<h1>Code projects detail</h1>
 
 	<article>
+		<h1>{{codeProject.cname}}</h1>
+		<img src="/{{codeProject.curl}}" alt="{{codeProject.calturl}}" />
 		<ul>
-			<img src="{{oneCodeProject.curl}}" alt="{{oneCodeProject.calturl}}" />
 			<li>
-				{{oneCodeProject.cname}}
+				{{codeProject.ctype}}
 			</li>
 			<li>
-				{{oneCodeProject.ctype}}
+				{{codeProject.cdesc}}
 			</li>
 			<li>
-				{{oneCodeProject.cdesc}}
-			</li>
-			<li>
-				{{oneCodeProject.cyear}}
+				{{codeProject.cyear}}
 			</li>
 
 			{{! workfor table info }}
 			<li>
-				{{oneCodeProject.fname}}
+				{{codeProject.fname}}
 			</li>
 			<li>
-				{{oneCodeProject.fdesc}}
+				{{codeProject.fdesc}}
 			</li>
 		</ul>
 	</article>

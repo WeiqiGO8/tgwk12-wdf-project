@@ -6,7 +6,7 @@ const codeProjects = [
 		cname: "CSS Grid",
 		cdesc: "This was a exercise in css grid ... ",
 		cyear: 2018,
-		curl: "./img/flower.jpg",
+		curl: "",
 		calturl: "",
 	},
 	{

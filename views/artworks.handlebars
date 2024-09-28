@@ -1,21 +1,21 @@
-<section class="text-container-light projects-container">
+<section class="text-container-light artworks-container">
 	<section class="choose-container">
 		<ul>
 			<li><a href="/artworks">Artworks</a></li>
 			<li><a href="/codeprojects">Code Projects</a></li>
 		</ul>
-
-		<h1>Artworks</h1>
-
-		<article>
-			{{#each artworks}}
-				<figure>
-					<a href="/artworks/{{aid}}">
-						<img src="{{aurl}}" alt="{{alturl}}" />
-					</a>
-				</figure>
-			{{/each}}
-		</article>
-
 	</section>
+
+	<h1>Artworks</h1>
+
+	<article>
+		{{#each artworks}}
+			<figure>
+				<a href="/artworks/{{aid}}">
+					<img src="{{aurl}}" alt="{{alturl}}" />
+				</a>
+			</figure>
+		{{/each}}
+	</article>
+
 </section>

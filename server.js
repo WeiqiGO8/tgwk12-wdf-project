@@ -162,7 +162,7 @@ app.get("/codeprojects/:cid", (req, res) => {
 		[cid],
 		(error, row) => {
 			console.log(row);
-			res.render("code-projects", { codeProject: row });
+			res.render("single-code-project", { codeProject: row });
 		}
 	);
 });
