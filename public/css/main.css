@@ -220,6 +220,7 @@ footer article ul li {
 
 .choose-container {
 	margin: 2em 0;
+	padding: 1.4em 0;
 	background: var(--background-showcase);
 }
 
@@ -266,6 +267,7 @@ footer article ul li {
 		"single-title single-title"
 		"single-img single-list";
 }
+
 .detail-container h1 {
 	grid-area: single-title;
 	text-align: left;
@@ -275,10 +277,6 @@ footer article ul li {
 .detail-container ul {
 	grid-area: single-list;
 	flex-direction: column;
-}
-
-.detail-container li:last-child {
-	list-style: none;
 }
 
 .detail-container img {
@@ -413,6 +411,19 @@ footer article ul li {
 @media screen and (max-width: 1700px) {
 	.home-page-container {
 		margin: 0;
+	}
+}
+
+@media screen and (max-width: 1600px) {
+	/* Detail page */
+	.detail-container article {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.detail-container img {
+		width: 100%;
+		height: auto;
 	}
 }
 

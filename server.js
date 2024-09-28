@@ -36,17 +36,6 @@ app.use(express.static("public"));
 // Handlebars
 app.engine("handlebars", exphbs.engine());
 
-// app.engine(
-// 	"handlebars",
-// 	engine({
-// 		helpers: {
-// 			eq(a, b) {
-// 				return a == b;
-// 			},
-// 		},
-// 	})
-// ); //initialize the engine to be handlebars
-
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
@@ -60,7 +49,7 @@ app.use(
 	})
 );
 
-// Middlewares ----------check for reduncendy or which to use----------------------------
+// Middlewares --------------------------------------------------
 // Session middleware for user/account
 app.use((req, res, next) => {
 	// Checks if the user is logged in
@@ -72,7 +61,7 @@ app.use((req, res, next) => {
 	next(); // continue to the next middleware or route
 });
 
-// define the different /route
+// define /route --------------------------------
 // Raw data
 // /rawworkfor
 app.get("/rawworkfor", (req, res) => {
