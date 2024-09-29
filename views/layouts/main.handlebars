@@ -15,10 +15,11 @@
 					<li><a href="/contact">Contact</a></li>
 					<li>
 						{{#if user}}
-							<p class="light-color">Welcome, {{user.username}}</p>
-							<span>
+							<a href="/usersTable">Users Table</a>
+							<li>
+								<p class="light-color">Welcome, {{user.username}}</p>
 								<a href="/logout">Logout</a>
-							</span>
+							</li>
 						{{else}}
 							<a href="/login">Login</a>
 						{{/if}}

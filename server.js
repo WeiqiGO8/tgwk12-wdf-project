@@ -52,6 +52,12 @@ app.use(
 // Middlewares --------------------------------------------------
 // Session middleware for user/account
 app.use((req, res, next) => {
+	// log the request method (GET or POST) and URL(/ or /login))
+	console.log(req.method, req.url);
+	next();
+});
+
+app.use((req, res, next) => {
 	// Checks if the user is logged in
 	if (req.session.user) {
 		console.log(req.session.user);
@@ -63,6 +69,16 @@ app.use((req, res, next) => {
 
 // define /route --------------------------------
 // Raw data
+app.get("/rawusers", (req, res) => {
+	db.all("SELECT * FROM users", (error, users) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(users);
+		}
+	});
+});
+
 // /rawworkfor
 app.get("/rawworkfor", (req, res) => {
 	db.all("SELECT * FROM workfor", (error, worksFor) => {
@@ -178,6 +194,22 @@ app.get("/login", (req, res) => {
 
 app.get("/logout", (req, res) => {
 	res.render("logout");
+});
+
+app.get("/usersTable", (req, res) => {
+	if (req.session.user) {
+		db.all("SELECT * FROM users", (error, rawusers) => {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log(rawusers);
+				const modelUsers = { usersTable: rawusers };
+				res.render("usersTable", modelUsers);
+			}
+		});
+	} else {
+		res.redirect("/login");
+	}
 });
 
 // /list worksfor route
