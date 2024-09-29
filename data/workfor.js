@@ -19,8 +19,20 @@ const workfor = [
 
 	{
 		fid: 4,
+		fname: "Volunteer",
+		fdesc: "Made when I volunteered at ...",
+	},
+
+	{
+		fid: 5,
+		fname: "Internship",
+		fdesc: "Made during my internship at ...",
+	},
+
+	{
+		fid: 6,
 		fname: "Company",
-		fdesc: "Project for Company",
+		fdesc: "Made when I worked at ...",
 	},
 ];
 
