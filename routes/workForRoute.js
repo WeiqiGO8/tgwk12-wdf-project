@@ -1,5 +1,5 @@
-const workfor = require("../data/workfor.js");
-const { rawWorkForRoute } = require("./rawWorkForRoute.js");
+const { rawWorkForRoute } = require("./rawDataRoutes/rawWorkForRoute.js");
+
 function workForRoute(app, db) {
 	app.get("/listworkfor", (req, res) => {
 		db.all(`SELECT * FROM workfor`, (error, rawworkfor) => {

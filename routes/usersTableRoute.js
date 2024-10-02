@@ -1,4 +1,4 @@
-const { rawusersRoute } = require("./rawUsersRoute.js");
+const { rawusersRoute } = require("./rawDataRoutes/rawUsersRoute.js");
 
 function usersTableRoute(app, db) {
 	app.get("/usersTable", (req, res) => {

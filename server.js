@@ -1,11 +1,11 @@
-// load the packages
+// LOAD PACKAGES ----------------------------------------
 const express = require("express");
 const sqlite3 = require("sqlite3");
 const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
-// import init tables
+// IMPORT INITIAL TABLES ---------------------------------
 const { initTableAccounts } = require("./inittables/initTableAccounts.js");
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
@@ -13,10 +13,13 @@ const {
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
 
-// import routes
+// IMPORT ROUTES ------------------------------------------
 //header nav
 const { defaultRoute } = require("./routes/defaultRoute.js");
 const { projectsRoute } = require("./routes/projectsRoute.js");
+const { aboutRoute } = require("./routes/aboutRoute.js");
+const { contactRoute } = require("./routes/contactRoute.js");
+
 // artworks
 const { artworksRoute } = require("./routes/artworksRoute.js");
 const {
@@ -29,9 +32,6 @@ const {
 	codeProjectDetailPageRoute,
 } = require("./routes/codeProjectDetailPageRoute.js");
 
-const { aboutRoute } = require("./routes/aboutRoute.js");
-const { contactRoute } = require("./routes/contactRoute.js");
-
 // secret page / singed in users visible routes
 const { userAccountRoute } = require("./routes/userAccountRoute.js");
 const { usersTableRoute } = require("./routes/usersTableRoute.js");
@@ -40,27 +40,31 @@ const { usersTableRoute } = require("./routes/usersTableRoute.js");
 const { loginRoute } = require("./routes/loginRoute.js");
 const { logoutRoute } = require("./routes/logoutRoute.js");
 const { registerRoute } = require("./routes/registerRoute.js");
+const {
+	registerAccount,
+} = require("./routes/accountHandling/registerAccount.js");
 const { workForRoute } = require("./routes/workForRoute.js");
-
-// Define ADMIN_USERNAME && ADMIN_PASSWORD
+const { loginAccount } = require("./routes/accountHandling/loginAccount.js");
+const { logoutAccount } = require("./routes/accountHandling/logoutAccount.js");
+// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD ----------------------
 const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
 // const ADMIN_PASSWORD = ``;
 
-//define the ports
+// DEFINE PORTS
 const port = 8080; //default port
 
-//create a web application
+// CREATE A WEB APPLICATION ----------------------------------
 const app = express();
 
-// DATABASE
+// DATABASE ---------------------------------------------------
 // create database file
 const dbFile = "my-project-data.sqlite3.db";
 const db = new sqlite3.Database(dbFile);
 
 app.use(express.urlencoded({ extended: false }));
 
-//define the public directory as "static"
+// DEFINE THE PUBLIC DIRECTORY AS "STATIC" --------------------
 app.use(express.static("public"));
 
 // Handlebars
@@ -132,76 +136,14 @@ userAccountRoute(app);
 // account
 loginRoute(app);
 registerRoute(app);
-
-// logout route
 logoutRoute(app);
 
 // ACCOUNT HANDLING -------------------------------------------------------------------
-// Register form
-app.post("/register", async (req, res) => {
-	const { username, password } = req.body;
+registerAccount(app, db);
+loginAccount(app, db);
+logoutAccount(app, db);
 
-	//Add validation here
-
-	const hashedPassword = await bcrypt.hash(password, 14); //hash the password with a salt
-	console.log(hashedPassword);
-
-	//store the user in the database
-	db.run(
-		`INSERT INTO users (username,password) VALUES(?, ?)`,
-		[username, hashedPassword],
-		(error) => {
-			if (error) {
-				res.status(500).send(`Server error ${error.message}`);
-			} else {
-				res.redirect("/login"); //redirect to the login page after registration
-			}
-		}
-	);
-});
-
-//Login form
-app.post("/login", async (req, res) => {
-	const { username, password } = req.body;
-
-	//Find the user in the database
-	db.get(
-		`SELECT * FROM users WHERE username = ?`,
-		[username],
-		async (error, user) => {
-			if (error) {
-				res.status(500).send(`Server error ${error.message}`);
-			} else if (!user) {
-				res.status(401).send("user not found");
-			} else {
-				const isMatch = await bcrypt.compare(password, user.password);
-
-				if (isMatch) {
-					//if the password matches
-					req.session.user = user; //store the user in the session
-					req.session.isAdmin = user.username === ADMIN_USERNAME;
-					res.redirect("/"); //Redirect to the default route (home page)
-				} else {
-					res.status(401).send("wrong password");
-				}
-			}
-		}
-	);
-});
-
-// logout and destroy session
-app.post("/logout", (req, res) => {
-	req.session.destroy((error) => {
-		if (error) {
-			console.log("Error while destroying session", error);
-			res.status(500).send("Error while destroying session");
-		} else {
-			console.log("logged out");
-			res.redirect("/");
-		}
-	});
-});
-
+// APP LISTEN ON PORT... -------------------------------------------------------------
 app.listen(port, () => {
 	initTableAccounts(db);
 	initTableWorkFor(db);
@@ -210,3 +152,5 @@ app.listen(port, () => {
 
 	console.log("listening to port " + `${port}` + "...");
 });
+
+module.exports = { ADMIN_USERNAME, ADMIN_PASSWORD };

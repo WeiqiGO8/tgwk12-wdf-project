@@ -1,4 +1,4 @@
-const { rawArtworksRoute } = require("./rawArtworksRoute.js");
+const { rawArtworksRoute } = require("./rawDataRoutes/rawArtworksRoute.js");
 
 function artworksRoute(app, db) {
 	app.get("/artworks", (req, res) => {

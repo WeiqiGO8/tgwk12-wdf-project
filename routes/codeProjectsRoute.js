@@ -1,4 +1,6 @@
-const { rawCodeProjectsRoute } = require("./rawCodeProjectsRoute.js");
+const {
+	rawCodeProjectsRoute,
+} = require("./rawDataRoutes/rawCodeProjectsRoute.js");
 
 function codeProjectsRoute(app, db) {
 	app.get("/codeprojects", (req, res) => {
