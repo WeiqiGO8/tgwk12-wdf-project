@@ -13,6 +13,36 @@ const {
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
 
+// import routes
+//header nav
+const { defaultRoute } = require("./routes/defaultRoute.js");
+const { projectsRoute } = require("./routes/projectsRoute.js");
+// artworks
+const { artworksRoute } = require("./routes/artworksRoute.js");
+const {
+	artworkDetailPageRoute,
+} = require("./routes/artworkDetailPageRoute.js");
+
+// code projects
+const { codeProjectsRoute } = require("./routes/codeProjectsRoute.js");
+
+const { aboutRoute } = require("./routes/aboutRoute.js");
+const { contactRoute } = require("./routes/contactRoute.js");
+
+// secret page
+const { userAccountRoute } = require("./routes/userAccountRoute.js");
+
+// account
+const { loginRoute } = require("./routes/loginRoute.js");
+const { logoutRoute } = require("./routes/logoutRoute.js");
+const { registerRoute } = require("./routes/registerRoute.js");
+const codeProjects = require("./data/code-projects.js");
+const {
+	codeProjectDetailPageRoute,
+} = require("./routes/codeProjectDetailPageRoute.js");
+const { workForRoute } = require("./routes/workForRoute.js");
+const { usersTableRoute } = require("./routes/usersTableRoute.js");
+
 // Define ADMIN_USERNAME && ADMIN_PASSWORD
 const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
@@ -80,170 +110,34 @@ app.use((req, res, next) => {
 });
 
 // define /route --------------------------------
-// /default route
-app.get("/", (req, res) => {
-	console.log(req.session);
-	res.render("home");
-});
+//header nav routes:
+defaultRoute(app); //home
+projectsRoute(app);
+aboutRoute(app);
+contactRoute(app);
 
-// /projects __artworks route
-app.get("/projects", (req, res) => {
-	res.render("projects");
-});
-
-// /about route
-app.get("/about", (req, res) => {
-	res.render("about");
-});
-
-// /contact route
-app.get("/contact", (req, res) => {
-	res.render("contact");
-});
-
-// register route
-app.get("/register", (req, res) => {
-	res.render("register");
-});
-
-// Login route
-app.get("/login", (req, res) => {
-	res.render("login");
-});
+// account
+loginRoute(app);
+registerRoute(app);
 
 // logout route
-app.get("/logout", (req, res) => {
-	res.render("logout");
-});
+logoutRoute(app);
 
-app.get("/userAccount", (req, res) => {
-	res.render("userAccount");
-});
+userAccountRoute(app);
 
 // artworks
-// /rawartworks
-app.get("/rawartworks", (req, res) => {
-	db.all(`SELECT * FROM artworks`, (error, theArtworks) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(theArtworks);
-		}
-	});
-});
+artworksRoute(app, db);
+artworkDetailPageRoute(app, db);
 
-// /artworks
-app.get("/artworks", (req, res) => {
-	db.all(`SELECT * FROM artworks`, (error, rawartworks) => {
-		if (error) {
-			console.log(error);
-		} else {
-			const modelArtworks = { artworks: rawartworks };
-			res.render("artworks", modelArtworks);
-		}
-	});
-});
-
-// /projects __artworks detail page route
-app.get("/artworks/:aid", (req, res) => {
-	const aid = req.params.aid;
-	db.get(
-		`SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?`,
-		[aid],
-		(error, row) => {
-			console.log(row);
-			res.render("single-artwork", { artwork: row });
-		}
-	);
-});
-
-//  /rawcodeprojects
-app.get("/rawcodeprojects", (req, res) => {
-	db.all(`SELECT * FROM codeProjects`, (error, theCodeProjects) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(theCodeProjects);
-		}
-	});
-});
-
-//  codeprojects route
-app.get("/codeprojects", (req, res) => {
-	db.all(`SELECT * FROM codeProjects`, (error, rawcode) => {
-		console.log({ error, rawcode });
-		if (error) {
-			console.log(error);
-		} else {
-			const modelCodeProjects = { codeProjects: rawcode };
-			res.render("code-projects", modelCodeProjects);
-		}
-	});
-});
-
-// code projects detail page route
-app.get("/codeprojects/:cid", (req, res) => {
-	const cid = req.params.cid;
-	db.get(
-		`SELECT * FROM codeProjects INNER JOIN workfor ON codeProjects.fid = workfor.fid WHERE cid = ?`,
-		[cid],
-		(error, row) => {
-			console.log(row);
-			res.render("single-code-project", { codeProject: row });
-		}
-	);
-});
+// codeProjects
+codeProjectsRoute(app, db);
+codeProjectDetailPageRoute(app, db);
 
 // workfor
-// /rawworkfor
-app.get("/rawworkfor", (req, res) => {
-	db.all(`SELECT * FROM workfor`, (error, worksFor) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(worksFor);
-		}
-	});
-});
+workForRoute(app, db);
 
-// /list worksfor route
-app.get("/listworkfor", (req, res) => {
-	db.all(`SELECT * FROM workfor`, (error, rawworkfor) => {
-		if (error) {
-			console.log(error);
-		} else {
-			const modelWorkFor = { workfor: rawworkfor };
-			res.render("workfor", modelWorkFor);
-		}
-	});
-});
-
-// raw users
-app.get("/rawusers", (req, res) => {
-	db.all("SELECT * FROM users", (error, users) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(users);
-		}
-	});
-});
-
-app.get("/usersTable", (req, res) => {
-	if (req.session.user) {
-		db.all("SELECT * FROM users", (error, rawusers) => {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log(rawusers);
-				const modelUsers = { usersTable: rawusers };
-				res.render("usersTable", modelUsers);
-			}
-		});
-	} else {
-		res.redirect("/login");
-	}
-});
+// users
+usersTableRoute(app, db);
 
 // Account handling
 // Register form
