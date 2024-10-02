@@ -25,23 +25,22 @@ const {
 
 // code projects
 const { codeProjectsRoute } = require("./routes/codeProjectsRoute.js");
+const {
+	codeProjectDetailPageRoute,
+} = require("./routes/codeProjectDetailPageRoute.js");
 
 const { aboutRoute } = require("./routes/aboutRoute.js");
 const { contactRoute } = require("./routes/contactRoute.js");
 
-// secret page
+// secret page / singed in users visible routes
 const { userAccountRoute } = require("./routes/userAccountRoute.js");
+const { usersTableRoute } = require("./routes/usersTableRoute.js");
 
 // account
 const { loginRoute } = require("./routes/loginRoute.js");
 const { logoutRoute } = require("./routes/logoutRoute.js");
 const { registerRoute } = require("./routes/registerRoute.js");
-const codeProjects = require("./data/code-projects.js");
-const {
-	codeProjectDetailPageRoute,
-} = require("./routes/codeProjectDetailPageRoute.js");
 const { workForRoute } = require("./routes/workForRoute.js");
-const { usersTableRoute } = require("./routes/usersTableRoute.js");
 
 // Define ADMIN_USERNAME && ADMIN_PASSWORD
 const ADMIN_USERNAME = `Admin`;
@@ -66,10 +65,10 @@ app.use(express.static("public"));
 
 // Handlebars
 app.engine("handlebars", exphbs.engine());
-
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
+// MIDDLEWARES --------------------------------------------------
 // setup the session middleware
 app.use(
 	session({
@@ -85,7 +84,6 @@ app.use(
 	})
 );
 
-// Middlewares --------------------------------------------------
 // Session middleware for user/account
 app.use((req, res, next) => {
 	// log the request method (GET or POST) and URL(/ or /login))
@@ -109,21 +107,12 @@ app.use((req, res, next) => {
 	next(); // continue to the next middleware or route
 });
 
-// define /route --------------------------------
+// ROUTES --------------------------------
 //header nav routes:
 defaultRoute(app); //home
 projectsRoute(app);
 aboutRoute(app);
 contactRoute(app);
-
-// account
-loginRoute(app);
-registerRoute(app);
-
-// logout route
-logoutRoute(app);
-
-userAccountRoute(app);
 
 // artworks
 artworksRoute(app, db);
@@ -136,10 +125,18 @@ codeProjectDetailPageRoute(app, db);
 // workfor
 workForRoute(app, db);
 
-// users
+// singed in users visible routes
 usersTableRoute(app, db);
+userAccountRoute(app);
 
-// Account handling
+// account
+loginRoute(app);
+registerRoute(app);
+
+// logout route
+logoutRoute(app);
+
+// ACCOUNT HANDLING -------------------------------------------------------------------
 // Register form
 app.post("/register", async (req, res) => {
 	const { username, password } = req.body;
