@@ -3,7 +3,10 @@ const workfor = require("./../data/workfor.js");
 function initTableWorkFor(db) {
 	//create table workfor at startup
 	db.run(
-		`CREATE TABLE IF NOT EXISTS workfor (fid INTEGER PRIMARY KEY AUTOINCREMENT, fname TEXT NOT NULL, fdesc TEXT)`,
+		`CREATE TABLE IF NOT EXISTS workfor (
+			fid INTEGER PRIMARY KEY AUTOINCREMENT,
+			fname TEXT NOT NULL,
+			fdesc TEXT)`,
 		(error) => {
 			if (error) {
 				console.log("ERROR: ", error);

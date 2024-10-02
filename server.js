@@ -5,14 +5,15 @@ const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
+// import init tables
 const { initTableAccounts } = require("./inittables/initTableAccounts.js");
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
 	initTableCodeProjects,
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
-const artworks = require("./data/artworks.js");
 
+// Define ADMIN_USERNAME && ADMIN_PASSWORD
 const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
 // const ADMIN_PASSWORD = ``;
@@ -44,8 +45,13 @@ app.use(
 	session({
 		//setup the session middleware
 		secret: "sessionsecret", // secret key for signing the session ID
-		resave: true, // save the session on every request
-		saveUninitialized: true, //save the session even if it's empty
+		resave: false, // save the session on every request
+		saveUninitialized: false, //save the session even if it's empty
+		// cookie: {
+		// 	sameSite: "strict",
+		// 	httpOnly: true,
+		// 	secure: true,
+		// },
 	})
 );
 
@@ -54,6 +60,12 @@ app.use(
 app.use((req, res, next) => {
 	// log the request method (GET or POST) and URL(/ or /login))
 	console.log(req.method, req.url);
+	next();
+});
+
+app.use((req, res, next) => {
+	console.log("session passed to response locals...");
+	res.locals.session = req.session;
 	next();
 });
 
@@ -68,108 +80,15 @@ app.use((req, res, next) => {
 });
 
 // define /route --------------------------------
-// Raw data
-app.get("/rawusers", (req, res) => {
-	db.all("SELECT * FROM users", (error, users) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(users);
-		}
-	});
-});
-
-// /rawworkfor
-app.get("/rawworkfor", (req, res) => {
-	db.all("SELECT * FROM workfor", (error, worksFor) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(worksFor);
-		}
-	});
-});
-
-// /rawartworks
-app.get("/rawartworks", (req, res) => {
-	db.all("SELECT * FROM artworks", (error, theArtworks) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(theArtworks);
-		}
-	});
-});
-
-//  /rawcodeprojects
-app.get("/rawcodeprojects", (req, res) => {
-	db.all("SELECT * FROM codeProjects", (error, theCodeProjects) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(theCodeProjects);
-		}
-	});
-});
-
 // /default route
 app.get("/", (req, res) => {
+	console.log(req.session);
 	res.render("home");
 });
 
 // /projects __artworks route
 app.get("/projects", (req, res) => {
 	res.render("projects");
-});
-
-// /artworks
-app.get("/artworks", (req, res) => {
-	db.all("SELECT * FROM artworks", (error, rawartworks) => {
-		if (error) {
-			console.log(error);
-		} else {
-			const modelArtworks = { artworks: rawartworks };
-			res.render("artworks", modelArtworks);
-		}
-	});
-});
-
-// /projects __artworks detail page route
-app.get("/artworks/:aid", (req, res) => {
-	const aid = req.params.aid;
-	db.get(
-		"SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?",
-		[aid],
-		(error, row) => {
-			console.log(row);
-			res.render("single-artwork", { artwork: row });
-		}
-	);
-});
-
-//  codeprojects route
-app.get("/codeprojects", (req, res) => {
-	db.all("SELECT * FROM codeProjects", (error, rawcode) => {
-		console.log({ error, rawcode });
-		if (error) {
-			console.log(error);
-		} else {
-			const modelCodeProjects = { codeProjects: rawcode };
-			res.render("code-projects", modelCodeProjects);
-		}
-	});
-});
-
-app.get("/codeprojects/:cid", (req, res) => {
-	const cid = req.params.cid;
-	db.get(
-		"SELECT * FROM codeProjects INNER JOIN workfor ON codeProjects.fid = workfor.fid WHERE cid = ?",
-		[cid],
-		(error, row) => {
-			console.log(row);
-			res.render("single-code-project", { codeProject: row });
-		}
-	);
 });
 
 // /about route
@@ -192,8 +111,122 @@ app.get("/login", (req, res) => {
 	res.render("login");
 });
 
+// logout route
 app.get("/logout", (req, res) => {
 	res.render("logout");
+});
+
+app.get("/userAccount", (req, res) => {
+	res.render("userAccount");
+});
+
+// artworks
+// /rawartworks
+app.get("/rawartworks", (req, res) => {
+	db.all(`SELECT * FROM artworks`, (error, theArtworks) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(theArtworks);
+		}
+	});
+});
+
+// /artworks
+app.get("/artworks", (req, res) => {
+	db.all(`SELECT * FROM artworks`, (error, rawartworks) => {
+		if (error) {
+			console.log(error);
+		} else {
+			const modelArtworks = { artworks: rawartworks };
+			res.render("artworks", modelArtworks);
+		}
+	});
+});
+
+// /projects __artworks detail page route
+app.get("/artworks/:aid", (req, res) => {
+	const aid = req.params.aid;
+	db.get(
+		`SELECT * FROM artworks INNER JOIN workfor ON artworks.fid = workfor.fid WHERE aid = ?`,
+		[aid],
+		(error, row) => {
+			console.log(row);
+			res.render("single-artwork", { artwork: row });
+		}
+	);
+});
+
+//  /rawcodeprojects
+app.get("/rawcodeprojects", (req, res) => {
+	db.all(`SELECT * FROM codeProjects`, (error, theCodeProjects) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(theCodeProjects);
+		}
+	});
+});
+
+//  codeprojects route
+app.get("/codeprojects", (req, res) => {
+	db.all(`SELECT * FROM codeProjects`, (error, rawcode) => {
+		console.log({ error, rawcode });
+		if (error) {
+			console.log(error);
+		} else {
+			const modelCodeProjects = { codeProjects: rawcode };
+			res.render("code-projects", modelCodeProjects);
+		}
+	});
+});
+
+// code projects detail page route
+app.get("/codeprojects/:cid", (req, res) => {
+	const cid = req.params.cid;
+	db.get(
+		`SELECT * FROM codeProjects INNER JOIN workfor ON codeProjects.fid = workfor.fid WHERE cid = ?`,
+		[cid],
+		(error, row) => {
+			console.log(row);
+			res.render("single-code-project", { codeProject: row });
+		}
+	);
+});
+
+// workfor
+// /rawworkfor
+app.get("/rawworkfor", (req, res) => {
+	db.all(`SELECT * FROM workfor`, (error, worksFor) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(worksFor);
+		}
+	});
+});
+
+// /list worksfor route
+app.get("/listworkfor", (req, res) => {
+	db.all(`SELECT * FROM workfor`, (error, rawworkfor) => {
+		if (error) {
+			console.log(error);
+		} else {
+			const modelWorkFor = { workfor: rawworkfor };
+			res.render("workfor", modelWorkFor);
+		}
+	});
+});
+
+// raw users
+app.get("/rawusers", (req, res) => {
+	db.all("SELECT * FROM users", (error, users) => {
+		if (error) {
+			console.log(error);
+		} else {
+			res.send(users);
+		}
+	});
 });
 
 app.get("/usersTable", (req, res) => {
@@ -212,18 +245,7 @@ app.get("/usersTable", (req, res) => {
 	}
 });
 
-// /list worksfor route
-app.get("/listworkfor", (req, res) => {
-	db.all("SELECT * FROM workfor", (error, rawworkfor) => {
-		if (error) {
-			console.log(error);
-		} else {
-			const modelWorkFor = { workfor: rawworkfor };
-			res.render("workfor", modelWorkFor);
-		}
-	});
-});
-
+// Account handling
 // Register form
 app.post("/register", async (req, res) => {
 	const { username, password } = req.body;
@@ -235,7 +257,7 @@ app.post("/register", async (req, res) => {
 
 	//store the user in the database
 	db.run(
-		"INSERT INTO users (username,password) VALUES(?, ?)",
+		`INSERT INTO users (username,password) VALUES(?, ?)`,
 		[username, hashedPassword],
 		(error) => {
 			if (error) {
@@ -253,7 +275,7 @@ app.post("/login", async (req, res) => {
 
 	//Find the user in the database
 	db.get(
-		"SELECT * FROM users WHERE username = ?",
+		`SELECT * FROM users WHERE username = ?`,
 		[username],
 		async (error, user) => {
 			if (error) {
@@ -276,9 +298,17 @@ app.post("/login", async (req, res) => {
 	);
 });
 
+// logout and destroy session
 app.post("/logout", (req, res) => {
-	req.session.destroy(); //destroy the session
-	res.redirect("/"); // redirect to the home page
+	req.session.destroy((error) => {
+		if (error) {
+			console.log("Error while destroying session", error);
+			res.status(500).send("Error while destroying session");
+		} else {
+			console.log("logged out");
+			res.redirect("/");
+		}
+	});
 });
 
 app.listen(port, () => {
@@ -287,5 +317,5 @@ app.listen(port, () => {
 	initTableArtworks(db);
 	initTableCodeProjects(db);
 
-	console.log("server up and running, listening to port " + `${port}` + "...");
+	console.log("listening to port " + `${port}` + "...");
 });

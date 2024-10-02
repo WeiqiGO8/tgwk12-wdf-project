@@ -1,6 +1,7 @@
 /* Global styles ------------------------------------*/
 * {
 	box-sizing: border-box;
+	object-fit: cover;
 	font-family: sans-serif;
 	margin: 0;
 	padding: 0;
@@ -215,12 +216,6 @@ footer article ul li {
 	padding: 2em;
 }
 
-/* projects route page style */
-/* START ----------------------------- 
-		(w3school)
-		https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
-*/
-
 .choose-container {
 	margin: 2em 0;
 	padding: 1.4em 0;
@@ -236,23 +231,36 @@ footer article ul li {
 	list-style: none;
 }
 
-.artworks-container article {
+/* projects route page style */
+/* START ----------------------------- 
+		(w3school)
+		(chatGPT, )
+	-	https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
+	-	https://chatgpt.com/share/66fcd7cc-9f04-800d-8d52-397ee038e178
+		*/
+
+.artworks-container .projectRow {
 	background: var(--background-gallery);
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
-	align-items: center;
-	padding: 10em 0;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0.3em 1em;
 }
 
-.artworks-container article figure {
-	max-width: 50%;
-	padding: 1em 2em;
+.artworks-container .projectColumn {
+	flex: 0 1 auto;
+	padding: 0.2em;
 }
 
-.artworks-container img {
-	max-height: 20em;
+.artworks-container .projectColumn img {
+	display: inline-block;
+	max-width: 100%;
+	width: auto;
+	height: 16em;
+	border: 0.1em solid #000000;
 }
+/* ENDS ---------------------------------------- */
 
 .codeprojects-container article {
 	background: var(--background-gallery);
@@ -306,6 +314,8 @@ footer article ul li {
 
 .contact-container .map-container {
 	width: 100%;
+	height: auto;
+	padding: 0;
 }
 
 /* /about route page style */
@@ -398,7 +408,9 @@ td {
 		width: 100%;
 		height: auto;
 	}
+}
 
+@media screen and (max-width: 1090px) {
 	.login-form form {
 		width: 100%;
 		height: 22em;
@@ -492,6 +504,18 @@ td {
 		padding: 0;
 	}
 
+	.artworks-container .projectRow {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.artworks-container .projectColumn img {
+		max-width: 100%;
+		width: auto;
+		height: auto;
+		text-align: center;
+	}
+
 	.contact-container {
 		flex-direction: column;
 		align-items: center;
@@ -502,3 +526,25 @@ td {
 		padding: 1em;
 	}
 }
+/* 
+.artworks-container .projectRow {
+	background: var(--background-gallery);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0.3em 1em;
+}
+
+.artworks-container .projectColumn {
+	flex: 0 1 auto;
+	padding: 0.2em;
+}
+
+.artworks-container .projectColumn img {
+	display: inline-block;
+	max-width: 100%;
+	width: auto;
+	height: 16em;
+	border: 0.1em solid #000000;
+} */

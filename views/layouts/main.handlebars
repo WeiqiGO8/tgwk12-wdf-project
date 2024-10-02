@@ -17,8 +17,11 @@
 						{{#if user}}
 							<a href="/usersTable">Users Table</a>
 							<li>
-								<p class="light-color">Welcome, {{user.username}}</p>
-								<a href="/logout">Logout</a>
+								<p class="light-color">Welcome -
+									{{!-- {{user.username}} --}}
+									<a href="/userAccount">{{user.username}} - </a>
+									<a href="/logout">Logout</a>
+								</p>
 							</li>
 						{{else}}
 							<a href="/login">Login</a>
