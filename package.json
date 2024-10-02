@@ -23,6 +23,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
+		"connect-sqlite3": "^0.9.15",
 		"express": "^4.19.2",
 		"express-handlebars": "^8.0.1",
 		"express-session": "^1.18.0",

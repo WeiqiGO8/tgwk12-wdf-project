@@ -4,9 +4,9 @@ const sqlite3 = require("sqlite3");
 const exphbs = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
+const connectSqlite3 = require("connect-sqlite3");
 
 // IMPORT INITIAL TABLES ---------------------------------
-const { initTableAccounts } = require("./inittables/initTableAccounts.js");
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
 	initTableCodeProjects,
@@ -31,25 +31,21 @@ const { codeProjectsRoute } = require("./routes/codeProjectsRoute.js");
 const {
 	codeProjectDetailPageRoute,
 } = require("./routes/codeProjectDetailPageRoute.js");
+const { workForRoute } = require("./routes/workForRoute.js");
 
 // secret page / singed in users visible routes
 const { userAccountRoute } = require("./routes/userAccountRoute.js");
 const { usersTableRoute } = require("./routes/usersTableRoute.js");
 
-// account
+// account routes
 const { loginRoute } = require("./routes/loginRoute.js");
 const { logoutRoute } = require("./routes/logoutRoute.js");
 const { registerRoute } = require("./routes/registerRoute.js");
-const {
-	registerAccount,
-} = require("./routes/accountHandling/registerAccount.js");
-const { workForRoute } = require("./routes/workForRoute.js");
-const { loginAccount } = require("./routes/accountHandling/loginAccount.js");
-const { logoutAccount } = require("./routes/accountHandling/logoutAccount.js");
-// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD ----------------------
+
+// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD && ADMIN_ROLE ----------------------
 const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
-// const ADMIN_PASSWORD = ``;
+const ADMIN_ROLE = `ADMIN`;
 
 // DEFINE PORTS
 const port = 8080; //default port
@@ -66,6 +62,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // DEFINE THE PUBLIC DIRECTORY AS "STATIC" --------------------
 app.use(express.static("public"));
+const SQLiteStore = connectSqlite3(session);
 
 // Handlebars
 app.engine("handlebars", exphbs.engine());
@@ -77,6 +74,7 @@ app.set("views", "./views"); // define the views directory to be ./views
 app.use(
 	session({
 		//setup the session middleware
+		store: new SQLiteStore({ db: "session-db.db" }),
 		secret: "sessionsecret", // secret key for signing the session ID
 		resave: false, // save the session on every request
 		saveUninitialized: false, //save the session even if it's empty
@@ -118,30 +116,149 @@ projectsRoute(app);
 aboutRoute(app);
 contactRoute(app);
 
-// artworks
 artworksRoute(app, db);
 artworkDetailPageRoute(app, db);
 
-// codeProjects
 codeProjectsRoute(app, db);
 codeProjectDetailPageRoute(app, db);
 
-// workfor
+// workfor table (not visible in header nav)
 workForRoute(app, db);
 
-// singed in users visible routes
+// secret page/only singed in users can see visible routes
 usersTableRoute(app, db);
 userAccountRoute(app);
 
-// account
 loginRoute(app);
 registerRoute(app);
 logoutRoute(app);
 
 // ACCOUNT HANDLING -------------------------------------------------------------------
-registerAccount(app, db);
-loginAccount(app, db);
-logoutAccount(app, db);
+// salting the hash password
+const saltRounds = 14;
+
+// create user table
+// initiate tables
+// START -----------------------------------------------------------------------------------------------------
+function initTableAccounts(db) {
+	db.serialize(() => {
+		db.run(
+			`CREATE TABLE IF NOT EXISTS users (
+			uid INTEGER PRIMARY KEY AUTOINCREMENT, 
+			username TEXT NOT NULL, 
+			password TEXT NOT NULL,
+			role TEXT NOT NULL)`
+		);
+		db.get(`SELECT COUNT (*) as count FROM users`, async (error, row) => {
+			if (error) {
+				console.log(`error checking users: ${error.message}`);
+				return;
+			} else if (row.count === 0) {
+				//if no users exist, create a admin user
+				ADMIN_USERNAME;
+				ADMIN_PASSWORD;
+				ADMIN_ROLE;
+
+				const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, saltRounds); //hash the password with a salt
+
+				db.run(
+					`INSERT INTO users (
+						username,
+						password,
+						role) 
+					VALUES(?, ?, ?)`,
+					[ADMIN_USERNAME, hashedPassword, ADMIN_ROLE],
+					(error) => {
+						if (error) {
+							console.log(`error creating admin user: ${error.message}`);
+						} else {
+							console.log("admin user created successfully");
+						}
+					}
+				);
+			} else {
+				console.log("Admin user exists");
+			}
+		});
+	});
+}
+
+// Register form
+app.post("/register", async (req, res) => {
+	const { username, password, role } = req.body;
+
+	//Add validation here
+
+	const hashedPassword = await bcrypt.hash(password, saltRounds); //hash the password with a salt
+	console.log(hashedPassword);
+
+	const userRole = role ? role : "user";
+
+	//store the user in the database
+	db.run(
+		`INSERT INTO users (
+		username,
+		password,
+		role)
+		VALUES(?, ?, ?)`,
+		[username, hashedPassword, userRole],
+		(error) => {
+			if (error) {
+				res.status(500).send(`Server error ${error.message}`);
+			} else {
+				res.redirect("/login"); //redirect to the login page after registration
+			}
+		}
+	);
+});
+// END -----------------------------------------------------------------
+
+// LOGIN FORM ----------------------------------------------------------
+// START --------------------------------------------------------------
+app.post("/login", async (req, res) => {
+	const { username, password } = req.body;
+
+	// verification steps
+	//find user in the database (admin user || regular user)
+	db.get(
+		`SELECT * FROM users WHERE username = ?`,
+		[username],
+		async (error, user) => {
+			if (error) {
+				const model = { error: `server error: ${error.message}`, message: "" };
+				return res.status(500).render("login", model);
+			} else if (!user) {
+				const model = { error: "user not found", message: "" };
+				return res.status(401).render("login", model);
+			} else {
+				const isMatch = await bcrypt.compare(password, user.password);
+
+				if (isMatch) {
+					//if the password matches
+					req.session.user = user; //store the user in the session
+					req.session.isAdmin = user.role === "ADMIN"; // Check if the user is admin
+					req.session.isLoggedIn = true;
+					return res.redirect("/"); //Redirect to the default route (home page)
+				} else {
+					return res.status(401).send("wrong password");
+				}
+			}
+		}
+	);
+});
+// END ---------------------------------------------------------------------------
+// Logout
+app.post("/logout", (req, res) => {
+	req.session.destroy((error) => {
+		if (error) {
+			console.log("Error while destroying session", error);
+			res.status(500).send("Error while destroying session");
+		} else {
+			console.log("logged out");
+			res.redirect("/");
+		}
+	});
+});
 
 // APP LISTEN ON PORT... -------------------------------------------------------------
 app.listen(port, () => {
@@ -152,5 +269,3 @@ app.listen(port, () => {
 
 	console.log("listening to port " + `${port}` + "...");
 });
-
-module.exports = { ADMIN_USERNAME, ADMIN_PASSWORD };

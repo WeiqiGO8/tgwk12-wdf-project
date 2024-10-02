@@ -1,7 +1,8 @@
-function defaultRoute(app) {
+function defaultRoute(app, model) {
 	app.get("/", (req, res) => {
 		console.log(req.session);
-		res.render("home");
+		console.log("---> home model: " + JSON.stringify(model));
+		res.render("home", model);
 	});
 }
 module.exports = { defaultRoute };

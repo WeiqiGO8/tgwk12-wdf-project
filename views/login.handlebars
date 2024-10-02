@@ -11,4 +11,14 @@
 		<button type="submit">Login</button>
 		<a href="/register">Register</a>
 	</form>
+	<section>
+		{{#if error}}
+			<article class="error">{{error}}</article>
+		{{/if}}
+		{{#if message}}
+			<article class="message">{{message}}</article>
+		{{/if}}
+
+	</section>
+
 </section>
