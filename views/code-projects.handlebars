@@ -7,16 +7,19 @@
 	</section>
 
 	<h1>Code projects</h1>
-
+<a href="/codeprojects/new">Create Project</a>
 	<article>
 		<ul>
 			{{#each codeProjects}}
 				<li>
 					<a href="/codeprojects/{{cid}}">
-						{{cname}}
-						{{ctype}}
-						{{cyear}}
+						{{cname}},
 					</a>
+					{{cyear}}
+					{{#if ../session.isAdmin}}
+						<a href="/codeprojects/modify/{{cid}}" class="modify">Modify</a>
+						<a href="/codeprojects/delete/{{cid}}" class="delete">Delete</a>
+					{{/if}}
 				</li>
 			{{/each}}
 		</ul>

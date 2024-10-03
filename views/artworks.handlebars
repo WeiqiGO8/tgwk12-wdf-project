@@ -14,6 +14,12 @@
 				<a href="/artworks/{{aid}}">
 					<img src="{{aurl}}" alt="{{alturl}}" />
 				</a>
+
+					{{#if ../session.isAdmin}}
+						<a href="/artworks/modify/{{cid}}" class="modify">Modify</a>
+						<a href="/artworks/delete/{{cid}}" class="delete">Delete</a>
+					{{/if}}
+
 			</figure>
 		{{/each}}
 	</article>

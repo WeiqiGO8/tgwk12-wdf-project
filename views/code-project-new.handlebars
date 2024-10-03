@@ -1,0 +1,70 @@
+<section class="text-container-light">
+	{{#if codeProject.cid}}
+			<h1>modify project</h1>
+		<form action="/codeprojects/modify/{{codeProject.cid}}" method="post">
+	{{else}}
+		<h1>New code project</h1>
+		<form action="/codeprojects/new" method="post">		
+	{{/if}}
+
+	<label for="cname">Title:</label>
+		<input
+			type="text"
+			class="cname"
+			required="required"
+			placeholder="Name of code project"
+	{{#if codeProject.cname}} value="{{codeProject.cname}}" {{/if}}
+		/>
+
+		<label for="ctype">Type:</label>
+		<input
+			type="text"
+			class="ctype"
+			required="required"
+			placeholder="What languages did you use?"
+	{{#if codeProject.ctype}} value="{{codeProject.ctype}}" {{/if}}
+		/>
+
+		<label for="cyear">Year:</label>
+		<input
+			type="number"
+			class="cyear"
+			required="required"
+			placeholder="Year"
+	{{#if codeProject.cyear}} value="{{codeProject.cyear}}" {{/if}}
+		/>
+
+		<textarea
+			name="cdesc"
+			id="cdesc"
+			required="required"
+			placeholder="Code project description"
+		>{{#if codeProject.cdesc}} value="{{codeProject.cdesc}}" {{/if}}</textarea>
+
+	<label for="codeProjectType">Code Project type</label>
+		<select name="codeProjectType" id="codeProjectType">	
+			<option value="Personal" {{#if (eq codeProject.ctype "Personal")}} selected="selected"{{/if}}>Personal project</option>	
+			<option value="NTI-Gymnasiet-Johanneberg" {{#if (eq codeProject.ctype "High school")}} selected="selected"{{/if}}>High school</option>	
+			<option value="JU-JTH" {{#if (eq codeProject.ctype "JU-JTH")}} selected="selected"{{/if}}>University</option>	
+			<option value="Volunteer" {{#if (eq codeProject.ctype "Volunteer")}} selected="selected"{{/if}}>Volunteer</option>	
+			<option value="Internship" {{#if (eq codeProject.ctype "Internship")}} selected="selected"{{/if}}>Internship</option>	
+			<option value="Company" {{#if (eq codeProject.ctype "Company")}} selected="selected"{{/if}}>Company</option>
+		</select>
+
+	<label for="codeProjectUrl">URL</label>
+		<input
+			type="url"
+			name="curl"
+			id="codeProjectUrl"
+			placeholder="/image/title.jpg"
+		/>
+		
+		<button type="submit">
+			{{#if codeProject.cid}}
+				Modify code project 
+			{{else }} 
+				Create new project
+			{{/if}}
+		</button>
+	</form>
+</section>

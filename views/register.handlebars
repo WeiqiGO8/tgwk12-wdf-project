@@ -11,4 +11,11 @@
 		<button type="submit">Create account</button>
 		<a href="/login">Login</a>
 	</form>
+
+	{{#if error}}
+		<article class="error">{{error}}</article>
+	{{/if}}
+	{{#if message}}
+		<article class="message">{{message}}</article>
+	{{/if}}
 </section>

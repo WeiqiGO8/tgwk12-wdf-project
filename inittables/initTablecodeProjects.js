@@ -17,7 +17,7 @@ function initTableCodeProjects(db) {
 			FOREIGN KEY (fid) REFERENCES workfor(fid))`,
 		(error) => {
 			if (error) {
-				console.log(error);
+				console.log("error when creating code projects table", error);
 			} else {
 				console.log("---> table codeProjects created!");
 				//insert
@@ -25,23 +25,22 @@ function initTableCodeProjects(db) {
 					db.run(
 						`INSERT INTO codeProjects (cid, ctype, cname, cdesc, cyear, curl,	calturl, uid,	fid) 
 							VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-
 						[
 							oneCodeProject.cid,
-							oneCodeProject.uid,
-							oneCodeProject.fid,
 							oneCodeProject.ctype,
 							oneCodeProject.cname,
 							oneCodeProject.cdesc,
 							oneCodeProject.cyear,
 							oneCodeProject.curl,
 							oneCodeProject.calturl,
+							oneCodeProject.uid,
+							oneCodeProject.fid,
 						],
 						(error) => {
 							if (error) {
-								console.log(error);
+								console.log("error: ", error);
 							} else {
-								console.log("---> line added into codeProjects table ");
+								console.log("---> line added into codeProjects table");
 							}
 						}
 					);

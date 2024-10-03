@@ -1,7 +1,8 @@
 // LOAD PACKAGES ----------------------------------------
 const express = require("express");
 const sqlite3 = require("sqlite3");
-const exphbs = require("express-handlebars");
+// const exphbs = require("express-handlebars");
+const { engine } = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const connectSqlite3 = require("connect-sqlite3");
@@ -22,15 +23,9 @@ const { contactRoute } = require("./routes/contactRoute.js");
 
 // artworks
 const { artworksRoute } = require("./routes/artworksRoute.js");
-const {
-	artworkDetailPageRoute,
-} = require("./routes/artworkDetailPageRoute.js");
 
 // code projects
 const { codeProjectsRoute } = require("./routes/codeProjectsRoute.js");
-const {
-	codeProjectDetailPageRoute,
-} = require("./routes/codeProjectDetailPageRoute.js");
 const { workForRoute } = require("./routes/workForRoute.js");
 
 // secret page / singed in users visible routes
@@ -58,14 +53,23 @@ const app = express();
 const dbFile = "my-project-data.sqlite3.db";
 const db = new sqlite3.Database(dbFile);
 
-app.use(express.urlencoded({ extended: false }));
-
 // DEFINE THE PUBLIC DIRECTORY AS "STATIC" --------------------
 app.use(express.static("public"));
 const SQLiteStore = connectSqlite3(session);
 
 // Handlebars
-app.engine("handlebars", exphbs.engine());
+// app.engine("handlebars", exphbs.engine());
+app.engine(
+	"handlebars",
+	engine({
+		helpers: {
+			eq(a, b) {
+				return a === b;
+			},
+		},
+	})
+);
+
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
@@ -109,6 +113,9 @@ app.use((req, res, next) => {
 	next(); // continue to the next middleware or route
 });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // ROUTES --------------------------------
 //header nav routes:
 defaultRoute(app); //home
@@ -117,10 +124,7 @@ aboutRoute(app);
 contactRoute(app);
 
 artworksRoute(app, db);
-artworkDetailPageRoute(app, db);
-
 codeProjectsRoute(app, db);
-codeProjectDetailPageRoute(app, db);
 
 // workfor table (not visible in header nav)
 workForRoute(app, db);
@@ -145,7 +149,7 @@ function initTableAccounts(db) {
 		db.run(
 			`CREATE TABLE IF NOT EXISTS users (
 			uid INTEGER PRIMARY KEY AUTOINCREMENT, 
-			username TEXT NOT NULL, 
+			username TEXT NOT NULL UNIQUE, 
 			password TEXT NOT NULL,
 			role TEXT NOT NULL)`
 		);
@@ -204,7 +208,12 @@ app.post("/register", async (req, res) => {
 		[username, hashedPassword, userRole],
 		(error) => {
 			if (error) {
-				res.status(500).send(`Server error ${error.message}`);
+				const model = {
+					error: "Username taken",
+					message: "",
+				};
+
+				res.status(500).render("register", model);
 			} else {
 				res.redirect("/login"); //redirect to the login page after registration
 			}
