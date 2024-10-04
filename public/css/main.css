@@ -132,6 +132,24 @@ a:focus {
 
 /* Layouts */
 
+/* error handling layout */
+.status-handlebars {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: auto;
+}
+
+.status-handlebars h1 {
+	font-size: 4em;
+	padding: 1em;
+}
+
+.status-handlebars p {
+	font-size: 1.5em;
+}
+
 /* Navigation header */
 header {
 	padding: 1em 0;
@@ -267,16 +285,23 @@ footer article ul li {
 
 .codeprojects-container article {
 	background: var(--background-gallery);
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
 	padding: 2em;
 }
 
 .codeprojects-container article ul {
 	background: var(--background-text-container-dark);
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	justify-content: center;
+	flex-wrap: nowrap;
 	padding: 1em;
 }
+
+/* .codeprojects-container article ul li {
+	display: flex;
+	flex-wrap: nowrap;
+} */
 
 .codeprojects-container article ul a {
 	color: var(--color-default-dark);
@@ -564,6 +589,11 @@ td {
 		text-align: center;
 	}
 
+	.codeprojects-container article ul li {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.contact-container {
 		flex-direction: column;
 		align-items: center;
@@ -574,25 +604,3 @@ td {
 		padding: 1em;
 	}
 }
-/* 
-.artworks-container .projectRow {
-	background: var(--background-gallery);
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 0.3em 1em;
-}
-
-.artworks-container .projectColumn {
-	flex: 0 1 auto;
-	padding: 0.2em;
-}
-
-.artworks-container .projectColumn img {
-	display: inline-block;
-	max-width: 100%;
-	width: auto;
-	height: 16em;
-	border: 0.1em solid #000000;
-} */

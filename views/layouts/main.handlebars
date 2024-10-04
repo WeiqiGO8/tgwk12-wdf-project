@@ -13,15 +13,18 @@
 					<li><a href="/projects">Projects</a></li>
 					<li><a href="/about">About</a></li>
 					<li><a href="/contact">Contact</a></li>
+					{{#if isAdmin}}
+						<li>
+							<a href="/usersTable">Users Table</a>
+						</li>
+					{{/if}}
 					<li>
 						{{#if user}}
-							<a href="/usersTable">Users Table</a>
-							<li>
-								<p class="light-color">Welcome -
-									<a href="/userAccount">{{user.username}} - </a>
-									<a href="/logout">Logout</a>
-								</p>
-							</li>
+							<p class="light-color">Welcome -
+								{{user.username}}
+								--
+								<a href="/logout">Logout</a>
+							</p>
 						{{else}}
 							<a href="/login">Login</a>
 						{{/if}}

@@ -29,7 +29,6 @@ const { codeProjectsRoute } = require("./routes/codeProjectsRoute.js");
 const { workForRoute } = require("./routes/workForRoute.js");
 
 // secret page / singed in users visible routes
-const { userAccountRoute } = require("./routes/userAccountRoute.js");
 const { usersTableRoute } = require("./routes/usersTableRoute.js");
 
 // account routes
@@ -113,6 +112,12 @@ app.use((req, res, next) => {
 	next(); // continue to the next middleware or route
 });
 
+app.use((req, res, next) => {
+	res.locals.user = req.session.user || null;
+	res.locals.isAdmin = req.session.isAdmin || null;
+	next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -131,7 +136,6 @@ workForRoute(app, db);
 
 // secret page/only singed in users can see visible routes
 usersTableRoute(app, db);
-userAccountRoute(app, db);
 
 loginRoute(app);
 registerRoute(app);
@@ -270,6 +274,16 @@ app.post("/logout", (req, res) => {
 });
 
 // APP LISTEN ON PORT... -------------------------------------------------------------
+
+// 404 NOT FOUND -----------------------------------------------
+app.use((req, res) => {
+	res.status(404).render("404");
+});
+
+app.use((req, res) => {
+	res.status(500).render("500");
+});
+
 app.listen(port, () => {
 	initTableAccounts(db);
 	initTableWorkFor(db);
