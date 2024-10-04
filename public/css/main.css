@@ -5,26 +5,16 @@
 	font-family: sans-serif;
 	margin: 0;
 	padding: 0;
-	color: var(--color-default-dark);
+	color: var(--color-default-light);
 
 	/* Website color pallet */
-	--background-alternative-main: #073e9c77;
-	/* START -------------------------------------
-	CSS Gradient 
-	https://cssgradient.io/
-	 */
-	--main-background: radial-gradient(
-		circle,
-		#020024,
-		#090979,
-		#073e9c,
-		#0486cb,
-		#00d4ff
-	);
-	/* END ------------------------------------- */
-	--background-text-container-light: #9bdfff7e;
-	--background-text-container-dark: #7dd6ff7e;
-	--background-gallery: #a5a5a5;
+	--background-main: #002e7e;
+	--background-text-container-light: #0046c0;
+	--background-text-container-dark: #073e9c;
+
+	/* --background-text-container-light: #9bdfff7e;
+	--background-text-container-dark: #7dd6ff7e; */
+	--background-gallery: #49caca;
 	--background-main-header-navigation: #073e9c;
 	--background-main-footer: #073e9c;
 	--background-second-header: #073e9c;
@@ -35,23 +25,28 @@
 
 	/* links */
 	--color-a: #dfdfdf;
-	--color-a-visited: #f49dff;
+	--color-a-visited: #b8b8b8;
 
-	--color-modify: #0000ff;
+	--color-modify: #000000;
 	--color-delete: #ff0000;
 
 	/* buttons */
-	--background-button-color: #34d41f;
-	--background-button-hover-color: #ff6565;
-	--background-button-click-color: #858585;
+	--background-button-color: #ebebeb;
+	--background-button-hover-color: #afafaf;
+	--background-button-click-color: #535353;
+
+	/* boder colors */
+	--border-button-color: 0.2em solid #000000;
+	--border-button-hover-color: 0.2em solid #ebebeb;
+	--border-button-click-color: 0.2em solid #ebebeb;
 
 	/* accessibility */
-	--background-a-focus: #777777b9;
+	--background-a-focus: #10c000b9;
 }
 
 :root {
 	margin: 0 10%;
-	background: var(--main-background);
+	background: var(--background-main);
 }
 
 h1 {
@@ -95,10 +90,6 @@ a {
 a:link {
 	color: var(--color-a);
 	text-decoration: underline;
-}
-
-a:visited {
-	color: var(--color-a-visited);
 }
 
 a:hover {
@@ -253,13 +244,6 @@ footer article ul li {
 }
 
 /* projects route page style */
-/* START ----------------------------- 
-		(w3school)
-		(chatGPT, )
-	-	https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
-	-	https://chatgpt.com/share/66fcd7cc-9f04-800d-8d52-397ee038e178
-		*/
-
 .artworks-container .projectRow {
 	background: var(--background-gallery);
 	display: flex;
@@ -281,7 +265,6 @@ footer article ul li {
 	height: 16em;
 	border: 0.1em solid #000000;
 }
-/* ENDS ---------------------------------------- */
 
 .codeprojects-container article {
 	background: var(--background-gallery);
@@ -289,7 +272,6 @@ footer article ul li {
 }
 
 .codeprojects-container article ul {
-	background: var(--background-text-container-dark);
 	display: flex;
 	flex-direction: column;
 	width: 50%;
@@ -298,11 +280,6 @@ footer article ul li {
 	padding: 1em;
 }
 
-/* .codeprojects-container article ul li {
-	display: flex;
-	flex-wrap: nowrap;
-} */
-
 .codeprojects-container article ul a {
 	color: var(--color-default-dark);
 }
@@ -310,16 +287,20 @@ footer article ul li {
 .link-button-style {
 	color: var(--color-default-dark);
 	background: var(--background-button-color);
+	border: var(--border-button-color);
 	padding: 0.4em;
+	max-width: fit-content;
 }
 
 .link-button-style:hover {
 	background: var(--background-button-hover-color);
+	border: var(--border-button-hover-color);
 	padding: 0.4em;
 }
 
 .link-button-style:active {
 	background: var(--background-button-click-color);
+	border: var(--border-button-click-color);
 	padding: 0.4em;
 }
 
@@ -330,7 +311,6 @@ footer article ul li {
 
 .codeprojects-container .create-project {
 	color: var(--color-default-dark);
-	max-width: 12%;
 	padding: 1em;
 }
 
@@ -340,6 +320,60 @@ footer article ul li {
 
 .codeprojects-container .delete {
 	color: var(--color-delete);
+}
+
+.modify-delete-container {
+	color: var(--color-default-dark);
+	background: var(--background-text-container-light);
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.modify-delete-container form {
+	align-self: center;
+	width: 50%;
+	margin: 1em;
+	padding: 1em;
+}
+
+.modify-delete-container form input,
+textarea,
+select,
+option {
+	color: var(--color-default-dark);
+	height: 4em;
+	width: 50em;
+	margin: 1em;
+	padding: 1em;
+}
+
+.modify-delete-container form select option {
+	color: var(--color-default-dark);
+}
+
+.modify-delete-container form button {
+	color: var(--color-default-dark);
+	background: var(--background-button-color);
+	border: var(--border-button-color);
+	box-shadow: 0.2em 0.1em 0.1em #6dfff8;
+	height: auto;
+	width: auto;
+	margin: 1em;
+	padding: 1em;
+}
+
+.modify-delete-container form button:hover {
+	background: var(--background-button-hover-color);
+	border: var(--border-button-hover-color);
+}
+
+.modify-delete-container form button:active {
+	color: var(--color-default-light);
+	background: var(--background-button-click-color);
+	border: var(--border-button-click-color);
 }
 
 .detail-container article {
@@ -367,8 +401,6 @@ footer article ul li {
 	grid-area: single-img;
 	height: 30em;
 }
-
-/* END ----------------------------------- */
 
 /* Grid layout */
 /* contacts-container of the /projects route */
@@ -493,6 +525,17 @@ td {
 
 	.login-form input {
 		width: 80%;
+	}
+
+	.codeprojects-container article ul li {
+		display: block;
+		padding: 1em;
+	}
+
+	.link-button-style {
+		margin: 0.6em 0;
+		padding: 0.4em;
+		max-width: fit-content;
 	}
 }
 

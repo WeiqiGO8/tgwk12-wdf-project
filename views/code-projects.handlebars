@@ -17,9 +17,9 @@
 			{{#each codeProjects}}
 				<li>
 					<a  href="/codeprojects/{{cid}}">
-						{{cname}},
+						{{cname}}, {{cyear}}
 					</a>
-					{{cyear}}
+					
 					{{#if ../session.isAdmin}}
 						<a href="/codeprojects/modify/{{cid}}" class="modify link-button-style">Modify</a>
 						<a href="/codeprojects/delete/{{cid}}" class="delete link-button-style">Delete</a>

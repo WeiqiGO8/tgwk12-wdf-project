@@ -1,3 +1,8 @@
+// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD && ADMIN_ROLE ----------------------
+const ADMIN_USERNAME = `Admin`;
+const ADMIN_PASSWORD = `1234`;
+const ADMIN_ROLE = `ADMIN`;
+
 // LOAD PACKAGES ----------------------------------------
 const express = require("express");
 const sqlite3 = require("sqlite3");
@@ -35,11 +40,6 @@ const { usersTableRoute } = require("./routes/usersTableRoute.js");
 const { loginRoute } = require("./routes/loginRoute.js");
 const { logoutRoute } = require("./routes/logoutRoute.js");
 const { registerRoute } = require("./routes/registerRoute.js");
-
-// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD && ADMIN_ROLE ----------------------
-const ADMIN_USERNAME = `Admin`;
-const ADMIN_PASSWORD = `1234`;
-const ADMIN_ROLE = `ADMIN`;
 
 // DEFINE PORTS
 const port = 8080; //default port
@@ -147,7 +147,11 @@ const saltRounds = 14;
 
 // create user table
 // initiate tables
-// START -----------------------------------------------------------------------------------------------------
+// START ---------------------------------------------------------------
+// ()
+// - https://chatgpt.com/share/67003307-d090-800d-b3e7-7d0f014ff1a9
+//()
+// - https://chatgpt.com/share/6700352d-64e4-800d-a0f3-5fe554b80e7d
 function initTableAccounts(db) {
 	db.serialize(() => {
 		db.run(
@@ -190,16 +194,16 @@ function initTableAccounts(db) {
 		});
 	});
 }
+// END -----------------------------------------------------------------
 
 // Register form
+// START ---------------------------------------------------------------
+// ()
+// - https://chatgpt.com/share/67003307-d090-800d-b3e7-7d0f014ff1a9
 app.post("/register", async (req, res) => {
 	const { username, password, role } = req.body;
-
-	//Add validation here
-
 	const hashedPassword = await bcrypt.hash(password, saltRounds); //hash the password with a salt
 	console.log(hashedPassword);
-
 	const userRole = role ? role : "user";
 
 	//store the user in the database
@@ -227,12 +231,12 @@ app.post("/register", async (req, res) => {
 // END -----------------------------------------------------------------
 
 // LOGIN FORM ----------------------------------------------------------
-// START --------------------------------------------------------------
+// START ---------------------------------------------------------------
+// ()
+// - https://chatgpt.com/share/67003307-d090-800d-b3e7-7d0f014ff1a9
 app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
-	// verification steps
-	//find user in the database (admin user || regular user)
 	db.get(
 		`SELECT * FROM users WHERE username = ?`,
 		[username],
@@ -259,7 +263,8 @@ app.post("/login", async (req, res) => {
 		}
 	);
 });
-// END ---------------------------------------------------------------------------
+// END --------------------------------------------------------------------
+
 // Logout
 app.post("/logout", (req, res) => {
 	req.session.destroy((error) => {
@@ -273,9 +278,7 @@ app.post("/logout", (req, res) => {
 	});
 });
 
-// APP LISTEN ON PORT... -------------------------------------------------------------
-
-// 404 NOT FOUND -----------------------------------------------
+// RENDER ERROR HANDLING -----------------------------------------------
 app.use((req, res) => {
 	res.status(404).render("404");
 });
@@ -292,3 +295,12 @@ app.listen(port, () => {
 
 	console.log("listening to port " + `${port}` + "...");
 });
+
+// CSS REFERENCES
+// START ---------------------------------------------------------------------------
+// .artworks-container
+// (w3school, 2024)
+// (chatGPT, 2024)
+// -	https://www.w3schools.com/css/tryit.asp?filename=trycss3_flexbox_image_gallery
+// -	https://chatgpt.com/share/66fcd7cc-9f04-800d-8d52-397ee038e178
+// END ---------------------------------------------------------------------------
