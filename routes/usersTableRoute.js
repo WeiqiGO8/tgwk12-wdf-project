@@ -9,7 +9,7 @@ function usersTableRoute(app, db) {
 				} else {
 					console.log(rawusers);
 					const modelUsers = { usersTable: rawusers };
-					res.render("usersTable", modelUsers);
+					res.render("users-table", modelUsers);
 				}
 			});
 		} else {

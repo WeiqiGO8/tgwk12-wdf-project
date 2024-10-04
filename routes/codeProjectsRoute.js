@@ -55,6 +55,7 @@ function codeProjectsRoute(app, db) {
 				console.log("error fetching project for modification: ", error);
 				res.redirect("/codeprojects");
 			} else {
+				console.log(row);
 				res.render("code-project-new", { codeProject: row });
 			}
 		});

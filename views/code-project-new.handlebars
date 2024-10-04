@@ -9,6 +9,7 @@
 
 	<label for="cname">Title:</label>
 		<input
+			name="cname"
 			type="text"
 			class="cname"
 			required="required"
@@ -18,15 +19,17 @@
 
 		<label for="ctype">Type:</label>
 		<input
+			name="ctype"
 			type="text"
 			class="ctype"
 			required="required"
 			placeholder="What languages did you use?"
-	{{#if codeProject.ctype}} value="{{codeProject.ctype}}" {{/if}}
+	{{#if codeProject.ctype}} value="{{codeProject.ctype}}"{{/if}}
 		/>
 
 		<label for="cyear">Year:</label>
 		<input
+			name="cyear"
 			type="number"
 			class="cyear"
 			required="required"
@@ -39,20 +42,21 @@
 			id="cdesc"
 			required="required"
 			placeholder="Code project description"
-		>{{#if codeProject.cdesc}} value="{{codeProject.cdesc}}" {{/if}}</textarea>
+		>{{#if codeProject.cdesc}} {{codeProject.cdesc}}{{/if}}</textarea>
 
-	<label for="codeProjectType">Code Project type</label>
-		<select name="codeProjectType" id="codeProjectType">	
-			<option value="Personal" {{#if (eq codeProject.ctype "Personal")}} selected="selected"{{/if}}>Personal project</option>	
-			<option value="NTI-Gymnasiet-Johanneberg" {{#if (eq codeProject.ctype "High school")}} selected="selected"{{/if}}>High school</option>	
-			<option value="JU-JTH" {{#if (eq codeProject.ctype "JU-JTH")}} selected="selected"{{/if}}>University</option>	
-			<option value="Volunteer" {{#if (eq codeProject.ctype "Volunteer")}} selected="selected"{{/if}}>Volunteer</option>	
-			<option value="Internship" {{#if (eq codeProject.ctype "Internship")}} selected="selected"{{/if}}>Internship</option>	
-			<option value="Company" {{#if (eq codeProject.ctype "Company")}} selected="selected"{{/if}}>Company</option>
+	<label for="fid">Code Project type</label>
+		<select name="fid" id="fid">	
+			<option value="1" {{#if (eq codeProject.fid "1")}} selected="selected"{{/if}}>1 - Personal project</option>	
+			<option value="2" {{#if (eq codeProject.fid "2")}} selected="selected"{{/if}}>2 - High school</option>	
+			<option value="3" {{#if (eq codeProject.fid "3")}} selected="selected"{{/if}}>3 - University</option>	
+			<option value="4" {{#if (eq codeProject.fid "4")}} selected="selected"{{/if}}>4 - Volunteer</option>	
+			<option value="5" {{#if (eq codeProject.fid "5")}} selected="selected"{{/if}}>5 - Internship</option>	
+			<option value="6" {{#if (eq codeProject.fid "6")}} selected="selected"{{/if}}>6 - Company</option>
 		</select>
 
 	<label for="codeProjectUrl">URL</label>
 		<input
+			name="curl"
 			type="url"
 			name="curl"
 			id="codeProjectUrl"
