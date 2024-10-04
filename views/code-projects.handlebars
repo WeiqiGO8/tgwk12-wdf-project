@@ -10,19 +10,19 @@
 	
 
 {{#if user}}
-<a href="/codeprojects/new">Create Project</a>
+<a class="create-project link-button-style" href="/codeprojects/new">Create Project</a>
 {{/if}}
 	<article>
 		<ul>
 			{{#each codeProjects}}
 				<li>
-					<a href="/codeprojects/{{cid}}">
+					<a  href="/codeprojects/{{cid}}">
 						{{cname}},
 					</a>
 					{{cyear}}
 					{{#if ../session.isAdmin}}
-						<a href="/codeprojects/modify/{{cid}}" class="modify">Modify</a>
-						<a href="/codeprojects/delete/{{cid}}" class="delete">Delete</a>
+						<a href="/codeprojects/modify/{{cid}}" class="modify link-button-style">Modify</a>
+						<a href="/codeprojects/delete/{{cid}}" class="delete link-button-style">Delete</a>
 					{{/if}}
 				</li>
 			{{/each}}
