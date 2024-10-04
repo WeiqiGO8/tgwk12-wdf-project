@@ -49,7 +49,7 @@ function codeProjectsRoute(app, db) {
 	// https://chatgpt.com/share/66ff0b9c-1bec-800d-ab64-7d584a417302
 	// render /codeprojects/modify/cid route page
 	app.get("/codeprojects/modify/:cid", (req, res) => {
-		const [cid] = req.params.cid;
+		const cid = req.params.cid;
 		db.get(`SELECT * FROM codeProjects WHERE cid = ?`, [cid], (error, row) => {
 			if (error) {
 				console.log("error fetching project for modification: ", error);

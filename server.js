@@ -131,7 +131,7 @@ workForRoute(app, db);
 
 // secret page/only singed in users can see visible routes
 usersTableRoute(app, db);
-userAccountRoute(app);
+userAccountRoute(app, db);
 
 loginRoute(app);
 registerRoute(app);
