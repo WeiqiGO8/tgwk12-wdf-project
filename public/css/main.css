@@ -141,6 +141,21 @@ a:focus {
 	font-size: 1.5em;
 }
 
+.pagination-buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.pagination-buttons a {
+	margin: 1em;
+	padding: 1em;
+}
+
+.hide-element {
+	display: none;
+}
+
 /* Navigation header */
 header {
 	padding: 1em 0;

@@ -2,12 +2,19 @@ const { rawArtworksRoute } = require("./rawDataRoutes/rawArtworksRoute.js");
 
 function artworksRoute(app, db) {
 	app.get("/artworks", (req, res) => {
-		db.all(`SELECT * FROM artworks`, (error, rawartworks) => {
+		const page = req.query.page || 1;
+		const limit = 3;
+		const offset = (page - 1) * limit;
+		const nextPage = parseInt(page) + 1;
+		const prevPage = parseInt(page) - 1;
+
+		const query = `SELECT * FROM artworks LIMIT ? OFFSET ?`;
+
+		db.all(query, [limit, offset], (error, rows) => {
 			if (error) {
 				console.log(error);
 			} else {
-				const modelArtworks = { artworks: rawartworks };
-				res.render("artworks", modelArtworks);
+				res.render("artworks", { artworks: rows, page, nextPage, prevPage });
 				// console.log(rawartworks);
 			}
 		});

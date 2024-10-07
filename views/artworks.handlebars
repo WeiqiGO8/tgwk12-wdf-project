@@ -18,4 +18,13 @@
 		{{/each}}
 	</article>
 
+	<section class="pagination-buttons">
+		{{#if page}}
+			<a id="previous-button" href="/artworks?page={{prevPage}}">Previous</a>
+		{{/if}}
+		{{#if page}}
+			<a id="next-button" href="/artworks?page={{nextPage}}">Next</a>
+		{{/if}}
+	</section>
+
 </section>
