@@ -20,10 +20,18 @@
 
 	<section class="pagination-buttons">
 		{{#if page}}
-			<a id="previous-button" href="/artworks?page={{prevPage}}">Previous</a>
+			<a
+				id="previous-button"
+				class="link-button-style"
+				href="/artworks?page={{prevPage}}"
+			>Previous</a>
 		{{/if}}
 		{{#if page}}
-			<a id="next-button" href="/artworks?page={{nextPage}}">Next</a>
+			<a
+				id="next-button"
+				class="link-button-style"
+				href="/artworks?page={{nextPage}}"
+			>Next</a>
 		{{/if}}
 	</section>
 

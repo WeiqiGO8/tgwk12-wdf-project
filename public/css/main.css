@@ -149,11 +149,31 @@ a:focus {
 
 .pagination-buttons a {
 	margin: 1em;
-	padding: 1em;
 }
 
-.hide-element {
-	display: none;
+.link-button-style {
+	color: var(--color-default-dark);
+	background: var(--background-button-color);
+	border: var(--border-button-color);
+	padding: 0.4em;
+	max-width: fit-content;
+}
+
+.link-button-style:hover {
+	background: var(--background-button-hover-color);
+	border: var(--border-button-hover-color);
+	padding: 0.4em;
+}
+
+.link-button-style:active {
+	background: var(--background-button-click-color);
+	border: var(--border-button-click-color);
+	padding: 0.4em;
+}
+
+.link-button-style:focus {
+	background: var(--background-a-focus);
+	padding: 0.4em;
 }
 
 /* Navigation header */
@@ -297,31 +317,6 @@ footer article ul li {
 
 .codeprojects-container article ul a {
 	color: var(--color-default-dark);
-}
-
-.link-button-style {
-	color: var(--color-default-dark);
-	background: var(--background-button-color);
-	border: var(--border-button-color);
-	padding: 0.4em;
-	max-width: fit-content;
-}
-
-.link-button-style:hover {
-	background: var(--background-button-hover-color);
-	border: var(--border-button-hover-color);
-	padding: 0.4em;
-}
-
-.link-button-style:active {
-	background: var(--background-button-click-color);
-	border: var(--border-button-click-color);
-	padding: 0.4em;
-}
-
-.link-button-style:focus {
-	background: var(--background-a-focus);
-	padding: 0.4em;
 }
 
 .codeprojects-container .create-project {
@@ -471,13 +466,16 @@ option {
 }
 
 .login-form input {
+	color: var(--color-default-dark);
 	width: 50%;
 	margin: 1em;
 	padding: 0.8em;
 }
 
 .login-form button[type="submit"] {
+	color: var(--color-default-dark);
 	background: var(--background-button-color);
+	border: var(--border-button-color);
 	width: 50%;
 	margin: 1em;
 	padding: 0.8em;
@@ -485,7 +483,14 @@ option {
 
 .login-form button[type="submit"]:hover {
 	background: var(--background-button-hover-color);
+	border: var(--border-button-hover-color);
 	cursor: pointer;
+}
+
+.login-form button[type="submit"]:active {
+	color: var(--color-default-light);
+	background: var(--background-button-click-color);
+	border: var(--border-button-click-color);
 }
 
 .users-table article {
