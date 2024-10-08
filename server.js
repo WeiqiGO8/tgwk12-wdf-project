@@ -1,25 +1,25 @@
-// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD && ADMIN_ROLE ----------------------
+// DEFINE ADMIN_USERNAME && ADMIN_PASSWORD && ADMIN_ROLE
 const ADMIN_USERNAME = `Admin`;
 const ADMIN_PASSWORD = `1234`;
 const ADMIN_ROLE = `ADMIN`;
 
-// LOAD PACKAGES ----------------------------------------
+// LOAD PACKAGES
 const express = require("express");
 const sqlite3 = require("sqlite3");
-// const exphbs = require("express-handlebars");
+
 const { engine } = require("express-handlebars");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const connectSqlite3 = require("connect-sqlite3");
 
-// IMPORT INITIAL TABLES ---------------------------------
+// IMPORT INITIAL TABLES
 const { initTableArtworks } = require("./inittables/initTableArtworks.js");
 const {
 	initTableCodeProjects,
 } = require("./inittables/initTablecodeProjects.js");
 const { initTableWorkFor } = require("./inittables/initTableWorkFor.js");
 
-// IMPORT ROUTES ------------------------------------------
+// IMPORT ROUTES
 //header nav
 const { defaultRoute } = require("./routes/defaultRoute.js");
 const { projectsRoute } = require("./routes/projectsRoute.js");
@@ -44,20 +44,19 @@ const { registerRoute } = require("./routes/registerRoute.js");
 // DEFINE PORTS
 const port = 8080; //default port
 
-// CREATE A WEB APPLICATION ----------------------------------
+// CREATE A WEB APPLICATION
 const app = express();
 
-// DATABASE ---------------------------------------------------
+// DATABASE
 // create database file
 const dbFile = "my-project-data.sqlite3.db";
 const db = new sqlite3.Database(dbFile);
 
-// DEFINE THE PUBLIC DIRECTORY AS "STATIC" --------------------
+// DEFINE THE PUBLIC DIRECTORY AS "STATIC"
 app.use(express.static("public"));
 const SQLiteStore = connectSqlite3(session);
 
 // Handlebars
-// app.engine("handlebars", exphbs.engine());
 app.engine(
 	"handlebars",
 	engine({
@@ -72,7 +71,7 @@ app.engine(
 app.set("view engine", "handlebars"); //set handlebars as the view engine
 app.set("views", "./views"); // define the views directory to be ./views
 
-// MIDDLEWARES --------------------------------------------------
+// MIDDLEWARES
 // setup the session middleware
 app.use(
 	session({
