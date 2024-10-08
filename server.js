@@ -80,11 +80,11 @@ app.use(
 		secret: "sessionsecret", // secret key for signing the session ID
 		resave: false, // save the session on every request
 		saveUninitialized: false, //save the session even if it's empty
-		// cookie: {
-		// 	sameSite: "strict",
-		// 	httpOnly: true,
-		// 	secure: true,
-		// },
+		cookie: {
+			sameSite: "strict",
+			httpOnly: true,
+			secure: false,
+		},
 	})
 );
 
