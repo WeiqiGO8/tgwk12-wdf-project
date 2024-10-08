@@ -287,7 +287,7 @@ app.listen(port, () => {
 	initTableArtworks(db);
 	initTableCodeProjects(db);
 
-	console.log("listening to port " + `${port}` + "...");
+	console.log("listening to port " + `${port}` + "http://localhost:8080/");
 });
 
 // CSS REFERENCES
