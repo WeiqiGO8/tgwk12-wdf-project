@@ -76,7 +76,7 @@ app.set("views", "./views"); // define the views directory to be ./views
 app.use(
 	session({
 		//setup the session middleware
-		store: new SQLiteStore({ db: "session-db.db" }),
+		store: new SQLiteStore({ db: "my-project-data.sqlite3.db" }),
 		secret: "sessionsecret", // secret key for signing the session ID
 		resave: false, // save the session on every request
 		saveUninitialized: false, //save the session even if it's empty

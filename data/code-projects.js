@@ -35,7 +35,7 @@ const codeProjects = [
 		ctype: "HTML, CSS, JavaScript",
 		cname: "Portfolio",
 		cdesc: "This was an assignment where we had to create a portfolio",
-		cyear: 2024,
+		cyear: 2023,
 		curl: "",
 		calturl: "",
 	},
@@ -44,7 +44,8 @@ const codeProjects = [
 		fid: 5,
 		ctype: "HTML, CSS, JavaScript, Node.js, SQLite3, Express, Handlebars",
 		cname: "Portfolio",
-		cdesc: "This was an assignment where we had to create a portfolio",
+		cdesc:
+			"This was an assignment where we had to create a portfolio, using...",
 		cyear: 2024,
 		curl: "",
 		calturl: "",
